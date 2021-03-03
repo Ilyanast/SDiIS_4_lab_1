@@ -1,31 +1,38 @@
 package com.graph.editor.view;
 
+import com.graph.editor.model.SceneParamsReader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainSceneBuilder {
 
-    Stage primaryStage;
+    Scene activeScene;
+    BorderPane rootElement;
+    int sizeX, sizeY;
 
-    public MainSceneBuilder(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public MainSceneBuilder() {
+        loadSceneSizeParams();
+        buildScene();
     }
 
-    private void createScrollPane(Scene scene, Canvas canvas){
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(canvas);
+    private void loadSceneSizeParams(){
+        SceneParamsReader sceneParamsReader = new SceneParamsReader("sceneParams.txt");
+        int[] buffer = sceneParamsReader.getSceneSizeParams();
+        sizeX = buffer[0];
+        sizeY = buffer[1];
     }
 
-    public void buildScene(){
-        Group root = new Group();
-        Canvas canvas = new Canvas(640,480);
+    private void buildScene() {
+        MenuBarBuilder menuBarBuilder = new MenuBarBuilder();
+        rootElement = new BorderPane();
+        rootElement.setTop(menuBarBuilder.getMenuBar());
+        activeScene = new Scene(rootElement, sizeX, sizeY);
+    }
 
-        root.getChildren().add(canvas);
-
-        Scene mainScene = new Scene(root)
+    public Scene getActiveScene() {
+        return activeScene;
     }
 
 }
