@@ -17,7 +17,7 @@ public class ParamsReader {
     private void readSizeParams(String filename) {
 
         try {
-            scanner = new Scanner(new File("params.txt"));
+            scanner = new Scanner(new File("src/main/resources/params/params.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("File is not found!");
         }
