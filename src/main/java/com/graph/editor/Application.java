@@ -8,7 +8,6 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
         MainSceneBuilder mainSceneBuilder = new MainSceneBuilder();
-
         stage.setScene(mainSceneBuilder.getActiveScene());
         stage.setTitle("SDiIS Graph Drawer");
         stage.show();

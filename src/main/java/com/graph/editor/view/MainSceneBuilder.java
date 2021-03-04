@@ -1,34 +1,47 @@
 package com.graph.editor.view;
 
-import com.graph.editor.model.SceneParamsReader;
-import javafx.scene.Group;
+import com.graph.editor.model.MainWindowParams;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class MainSceneBuilder {
 
-    Scene activeScene;
-    BorderPane rootElement;
-    int sizeX, sizeY;
+    private Scene activeScene;
 
     public MainSceneBuilder() {
-        loadSceneSizeParams();
         buildScene();
     }
 
-    private void loadSceneSizeParams(){
-        SceneParamsReader sceneParamsReader = new SceneParamsReader("sceneParams.txt");
-        int[] buffer = sceneParamsReader.getSceneSizeParams();
-        sizeX = buffer[0];
-        sizeY = buffer[1];
+    private void setSizeParams(Pane pane, ScrollPane scrollPane, VBox rootElement){
+        MainWindowParams mainWindowParams = new MainWindowParams();
+      //  setScrollPaneSize(mainWindowParams, scrollPane);
+        setSceneSize(mainWindowParams, rootElement);
+        setPaneSize(mainWindowParams, pane);
+    }
+
+    private void setSceneSize(MainWindowParams mainWindowParams, VBox rootElement) {
+        activeScene = new Scene(rootElement, mainWindowParams.getSceneSizeX(), mainWindowParams.getSceneSizeY());
+    }
+
+    private void setPaneSize(MainWindowParams mainWindowParams, Pane pane){
+        pane.setPrefSize(mainWindowParams.getCanvasSizeX(), mainWindowParams.getCanvasSizeY());
+    }
+
+    private void setScrollPaneSize(MainWindowParams mainWindowParams, ScrollPane scrollPane){
+        scrollPane.setPrefSize(mainWindowParams.getCanvasSizeX(), mainWindowParams.getCanvasSizeY());
     }
 
     private void buildScene() {
         MenuBarBuilder menuBarBuilder = new MenuBarBuilder();
-        rootElement = new BorderPane();
-        rootElement.setTop(menuBarBuilder.getMenuBar());
-        activeScene = new Scene(rootElement, sizeX, sizeY);
+        ScrollPane scrollPane = new ScrollPane();
+        VBox rootElement = new VBox();
+        Pane pane = new Pane();
+
+        setSizeParams(pane, scrollPane, rootElement);
+        rootElement.getChildren().addAll(menuBarBuilder.getMenuBar(), scrollPane);
+        scrollPane.setContent(pane);
     }
 
     public Scene getActiveScene() {

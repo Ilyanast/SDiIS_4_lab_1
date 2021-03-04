@@ -1,14 +1,12 @@
 package com.graph.editor.view;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
 
 public class MenuBarBuilder {
 
-    MenuBar menuBar;
+    private MenuBar menuBar;
 
     public MenuBarBuilder() {
         createMenuBar();
