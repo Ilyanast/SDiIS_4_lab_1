@@ -1,20 +1,22 @@
 package com.graph.editor.model;
 
-public class MainWindowParams {
+public class ElementsSizeParams {
 
     private int sceneSizeX, sceneSizeY;
     private int canvasSizeX, canvasSizeY;
+    private int toolBarWidth;
 
-    public MainWindowParams() {
-        ParamsReader paramsReader = new ParamsReader("params.txt");
-        loadAllParams(paramsReader.getAllParams());
+    public ElementsSizeParams() {
+        SizeParamsReader paramsReader = new SizeParamsReader("params.txt");
+        readAllParams(paramsReader.getAllParams());
     }
 
-    private void loadAllParams(int[] allParams){
+    private void readAllParams(int[] allParams){
         sceneSizeX = allParams[0];
         sceneSizeY = allParams[1];
         canvasSizeX = allParams[2];
         canvasSizeY = allParams[3];
+        toolBarWidth = allParams[4];
     }
 
     public void setSceneSize(int sceneSizeX, int sceneSizeY){
@@ -41,5 +43,9 @@ public class MainWindowParams {
 
     public int getCanvasSizeY() {
         return canvasSizeY;
+    }
+
+    public int getToolBarWidth() {
+        return toolBarWidth;
     }
 }

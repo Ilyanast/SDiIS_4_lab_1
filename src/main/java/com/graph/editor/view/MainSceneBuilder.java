@@ -1,6 +1,6 @@
 package com.graph.editor.view;
 
-import com.graph.editor.model.MainWindowParams;
+import com.graph.editor.model.ElementsSizeParams;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -12,36 +12,33 @@ public class MainSceneBuilder {
     private Scene activeScene;
 
     public MainSceneBuilder() {
-        buildScene();
+        ElementsSizeParams elementsSizeParams = new ElementsSizeParams();
+        buildScene(elementsSizeParams);
     }
 
-    private void setSizeParams(Pane pane, VBox verticalRootElement){
-        MainWindowParams mainWindowParams = new MainWindowParams();
-        setSceneSize(mainWindowParams, verticalRootElement);
-        setPaneSize(mainWindowParams, pane);
+    private void setPaneSize(Pane pane, ElementsSizeParams elementsSizeParams){
+        pane.setPrefSize(elementsSizeParams.getCanvasSizeX(), elementsSizeParams.getCanvasSizeY());
     }
 
-    private void setSceneSize(MainWindowParams mainWindowParams, VBox verticalRootElement) {
-        activeScene = new Scene(verticalRootElement, mainWindowParams.getSceneSizeX(), mainWindowParams.getSceneSizeY());
-    }
-
-    private void setPaneSize(MainWindowParams mainWindowParams, Pane pane){
-        pane.setPrefSize(mainWindowParams.getCanvasSizeX(), mainWindowParams.getCanvasSizeY());
+    private void createActiveScene(ElementsSizeParams elementsSizeParams, VBox verticalRootElement) {
+        activeScene = new Scene(verticalRootElement, elementsSizeParams.getSceneSizeX(), elementsSizeParams.getSceneSizeY());
     }
 
 
-    private void buildScene() {
+    private void buildScene(ElementsSizeParams elementsSizeParams) {
+        ToolBarBuilder toolBarBuilder = new ToolBarBuilder(elementsSizeParams.getToolBarWidth());
         MenuBarBuilder menuBarBuilder = new MenuBarBuilder();
-        ToolBarBuilder toolBarBuilder = new ToolBarBuilder();
         ScrollPane scrollPane = new ScrollPane();
         HBox horizontalRootElement = new HBox();
         VBox verticalRootElement = new VBox();
         Pane pane = new Pane();
 
-        setSizeParams(pane, verticalRootElement);
+        scrollPane.setContent(pane);
+        setPaneSize(pane, elementsSizeParams);
+        createActiveScene(elementsSizeParams, verticalRootElement);
+
         horizontalRootElement.getChildren().addAll(toolBarBuilder.getToolBar(), scrollPane);
         verticalRootElement.getChildren().addAll(menuBarBuilder.getMenuBar(), horizontalRootElement);
-        scrollPane.setContent(pane);
     }
 
     public Scene getActiveScene() {

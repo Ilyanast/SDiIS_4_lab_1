@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class ParamsReader {
+public class SizeParamsReader {
 
-    private int [] sizeParams;
+    private int [] sizeParamsArray;
     private Scanner scanner;
 
-    public ParamsReader(String filename) {
+    public SizeParamsReader(String filename) {
         readSizeParams(filename);
-        
     }
 
     private void readSizeParams(String filename) {
@@ -26,16 +25,16 @@ public class ParamsReader {
     }
 
     private void fillParamsArray() {
-        sizeParams = new int[scanner.nextInt()];
+        sizeParamsArray = new int[scanner.nextInt()];
 
-        for (int i = 0; i < sizeParams.length; i++){
-            sizeParams[i] = scanner.nextInt();
+        for (int i = 0; i < sizeParamsArray.length; i++){
+            sizeParamsArray[i] = scanner.nextInt();
         }
     }
 
 
     public  int[] getAllParams() {
-        return sizeParams;
+        return sizeParamsArray;
     }
 
 }

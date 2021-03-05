@@ -12,12 +12,17 @@ import java.io.FileNotFoundException;
 public class ToolBarBuilder {
 
     private ToolBar toolBar;
+    private int toolBarWidth;
 
-    public ToolBarBuilder() {
+    public ToolBarBuilder(int toolBarWidth) {
+        this.toolBarWidth = toolBarWidth;
         createToolBar();
     }
 
-    //TODO FixIcons
+    private void setImageViewSize(ImageView imageView) {
+        imageView.setFitHeight(toolBarWidth);
+        imageView.setFitWidth(toolBarWidth);
+    }
 
     private void addIcon(int menuNumber){
         ImageView imageView = new ImageView();
@@ -30,14 +35,12 @@ public class ToolBarBuilder {
         }
 
         imageView.setImage(image);
-        imageView.setFitHeight(32);
-        imageView.setFitWidth(32);
+        setImageViewSize(imageView);
 
-        toolBar.getItems().add(imageView);
-        toolBar.getItems().add(new Separator());
+        toolBar.getItems().addAll(imageView, new Separator());
     }
 
-    private void createToolBar(){
+    private void createToolBar() {
         toolBar = new ToolBar();
 
         toolBar.setOrientation(Orientation.VERTICAL);
