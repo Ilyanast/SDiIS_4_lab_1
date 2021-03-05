@@ -9,7 +9,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) {
         MainSceneBuilder mainSceneBuilder = new MainSceneBuilder();
         stage.setScene(mainSceneBuilder.getActiveScene());
-        stage.setTitle("SDiIS Graph Drawer");
+        stage.setTitle("SDiIS Graph Editor");
         stage.show();
     }
 

@@ -13,8 +13,8 @@ public class MenuBarBuilder {
     }
 
     private void createMenuBar(){
-        MenuItem saveAsItem = new MenuItem("Save As");
         MenuItem openFileItem = new MenuItem("Open File");
+        MenuItem saveAsItem = new MenuItem("Save As");
         MenuItem aboutItem = new MenuItem("About");
 
         Menu fileMenu = new Menu("File");
