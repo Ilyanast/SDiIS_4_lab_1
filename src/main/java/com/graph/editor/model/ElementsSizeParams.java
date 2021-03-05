@@ -7,7 +7,7 @@ public class ElementsSizeParams {
     private int toolBarWidth;
 
     public ElementsSizeParams() {
-        SizeParamsReader paramsReader = new SizeParamsReader("params.txt");
+        SizeParamsReader paramsReader = new SizeParamsReader();
         readAllParams(paramsReader.getAllParams());
     }
 

@@ -9,11 +9,13 @@ public class SizeParamsReader {
     private int [] sizeParamsArray;
     private Scanner scanner;
 
-    public SizeParamsReader(String filename) {
-        readSizeParams(filename);
+    public SizeParamsReader() {
+        readSizeParams();
     }
 
-    private void readSizeParams(String filename) {
+    //TODO Throw exception
+
+    private void readSizeParams() {
 
         try {
             scanner = new Scanner(new File("src/main/resources/params/params.txt"));

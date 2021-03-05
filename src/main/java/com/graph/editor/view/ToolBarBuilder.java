@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 public class ToolBarBuilder {
 
     private ToolBar toolBar;
-    private int toolBarWidth;
+    private final int toolBarWidth;
 
     public ToolBarBuilder(int toolBarWidth) {
         this.toolBarWidth = toolBarWidth;
