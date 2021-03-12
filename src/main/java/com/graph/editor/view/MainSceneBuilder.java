@@ -2,7 +2,9 @@ package com.graph.editor.view;
 
 import com.graph.editor.model.ElementsSizeParams;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -25,12 +27,12 @@ public class MainSceneBuilder {
     }
 
 
-    private void buildScene(ElementsSizeParams elementsSizeParams) {
+    public void buildScene(ElementsSizeParams elementsSizeParams) {
         ToolBarBuilder toolBarBuilder = new ToolBarBuilder(elementsSizeParams.getToolBarWidth());
         MenuBarBuilder menuBarBuilder = new MenuBarBuilder();
-        ScrollPane scrollPane = new ScrollPane();
         HBox horizontalRootElement = new HBox();
         VBox verticalRootElement = new VBox();
+        ScrollPane scrollPane = new ScrollPane();
         Pane pane = new Pane();
 
         scrollPane.setContent(pane);

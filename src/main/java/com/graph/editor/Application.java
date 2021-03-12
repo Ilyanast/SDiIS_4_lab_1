@@ -1,14 +1,15 @@
 package com.graph.editor;
 
 import com.graph.editor.view.MainSceneBuilder;
+import com.graph.editor.view.MainView;
 import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) {
-        MainSceneBuilder mainSceneBuilder = new MainSceneBuilder();
-        stage.setScene(mainSceneBuilder.getActiveScene());
+        MainView mainView = new MainView();
+        stage.setScene(mainView.getActiveScene());
         stage.setTitle("SDiIS Graph Editor");
         stage.show();
     }
