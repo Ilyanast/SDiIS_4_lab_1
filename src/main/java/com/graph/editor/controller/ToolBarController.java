@@ -10,19 +10,19 @@ public class ToolBarController {
     public ToolBarController(ImageView[] toolBarElements) {
         this.toolBarElements = toolBarElements;
         vertexToolClickHandler();
-        arcToolClickHandler();
-        orientedArcToolClickHandler();
+        edgeToolClickHandler();
+        orientedEdgeToolClickHandler();
     }
 
     private void vertexToolClickHandler(){
         toolBarElements[0].setOnMouseClicked(mouseEvent -> System.out.println("Tool 1 click"));
     }
 
-    private void arcToolClickHandler(){
+    private void edgeToolClickHandler(){
         toolBarElements[1].setOnMouseClicked(mouseEvent -> System.out.println("Tool 2 click"));
     }
 
-    private void orientedArcToolClickHandler(){
+    private void orientedEdgeToolClickHandler(){
         toolBarElements[2].setOnMouseClicked(mouseEvent -> System.out.println("Tool 3 click"));
     }
 

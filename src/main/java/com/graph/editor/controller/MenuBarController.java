@@ -1,8 +1,5 @@
 package com.graph.editor.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 public class MenuBarController {
