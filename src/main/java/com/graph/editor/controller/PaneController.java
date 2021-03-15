@@ -8,5 +8,15 @@ public class PaneController {
 
     public PaneController(Pane pane) {
         this.pane = pane;
+        clickHandler();
     }
+
+    private void clickHandler() {
+        pane.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getClickCount() == 2) {
+                System.out.println("Click " + mouseEvent.getX() + " " + mouseEvent.getY());
+            }
+        });
+    }
+
 }

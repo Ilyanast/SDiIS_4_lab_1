@@ -1,50 +1,66 @@
 package com.graph.editor.view;
 
-import com.graph.editor.model.ElementsSizeParams;
+import com.graph.editor.model.Parameters;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class MainSceneBuilder {
 
+    private ToolBarBuilder toolBarBuilder;
+    private MenuBarBuilder menuBarBuilder;
     private Scene activeScene;
+    private Pane pane;
 
     public MainSceneBuilder() {
-        ElementsSizeParams elementsSizeParams = new ElementsSizeParams();
-        buildScene(elementsSizeParams);
+        buildScene();
     }
 
-    private void setPaneSize(Pane pane, ElementsSizeParams elementsSizeParams){
-        pane.setPrefSize(elementsSizeParams.getCanvasSizeX(), elementsSizeParams.getCanvasSizeY());
+    private void setPaneSize() {
+        pane.setPrefSize(Parameters.PANE_SIZE_X, Parameters.PANE_SIZE_Y);
     }
 
-    private void createActiveScene(ElementsSizeParams elementsSizeParams, VBox verticalRootElement) {
-        activeScene = new Scene(verticalRootElement, elementsSizeParams.getSceneSizeX(), elementsSizeParams.getSceneSizeY());
+    private void createActiveScene(VBox verticalRootElement) {
+        activeScene = new Scene(verticalRootElement, Parameters.SCENE_SIZE_X, Parameters.SCENE_SIZE_Y);
+    }
+
+    private void setScrollPaneParams(ScrollPane scrollPane){
+        scrollPane.setStyle("-fx-background-color: #b5b5b5; -fx-background-insets: 0, 2;");
+        scrollPane.setContent(pane);
     }
 
 
-    public void buildScene(ElementsSizeParams elementsSizeParams) {
-        ToolBarBuilder toolBarBuilder = new ToolBarBuilder(elementsSizeParams.getToolBarWidth());
-        MenuBarBuilder menuBarBuilder = new MenuBarBuilder();
+    public void buildScene() {
+        toolBarBuilder = new ToolBarBuilder();
+        menuBarBuilder = new MenuBarBuilder();
         HBox horizontalRootElement = new HBox();
         VBox verticalRootElement = new VBox();
         ScrollPane scrollPane = new ScrollPane();
-        Pane pane = new Pane();
+        pane = new Pane();
 
-        scrollPane.setContent(pane);
-        setPaneSize(pane, elementsSizeParams);
-        createActiveScene(elementsSizeParams, verticalRootElement);
+        createActiveScene(verticalRootElement);
+        setScrollPaneParams(scrollPane);
+        setPaneSize();
 
-        horizontalRootElement.getChildren().addAll(toolBarBuilder.getToolBar(), scrollPane);
         verticalRootElement.getChildren().addAll(menuBarBuilder.getMenuBar(), horizontalRootElement);
+        horizontalRootElement.getChildren().addAll(toolBarBuilder.getToolBar(), scrollPane);
     }
 
     public Scene getActiveScene() {
         return activeScene;
     }
 
+    public Pane getPane() {
+        return pane;
+    }
+
+    public ImageView[] getToolBarItems() {
+        return toolBarBuilder.getToolBarItems();
+    }
+
+    public MenuItem[] getMenuBarItems() { return menuBarBuilder.getMenuBarItems(); }
 }

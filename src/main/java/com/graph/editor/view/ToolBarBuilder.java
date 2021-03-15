@@ -1,5 +1,6 @@
 package com.graph.editor.view;
 
+import com.graph.editor.model.Parameters;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
@@ -12,42 +13,48 @@ import java.io.FileNotFoundException;
 public class ToolBarBuilder {
 
     private ToolBar toolBar;
-    private final int toolBarWidth;
+    private final ImageView[] toolBarItems;
 
-    public ToolBarBuilder(int toolBarWidth) {
-        this.toolBarWidth = toolBarWidth;
+    public ToolBarBuilder() {
+        toolBarItems = new ImageView[Parameters.AMOUNT_OF_TOOLBAR_ITEMS];
         createToolBar();
     }
 
     private void setImageViewSize(ImageView imageView) {
-        imageView.setFitHeight(toolBarWidth);
-        imageView.setFitWidth(toolBarWidth);
+        imageView.setFitHeight(Parameters.TOOLBAR_WIDTH);
+        imageView.setFitWidth(Parameters.TOOLBAR_WIDTH);
     }
 
-    private void addIcon(int menuNumber){
-        ImageView imageView = new ImageView();
-        Image image = null;
-
+    private Image getImageFromFile(int menuNumber) {
         try {
-            image = new Image(new FileInputStream("src/main/resources/icons/menu_" + menuNumber + ".png"));
+            return new Image(new FileInputStream(Parameters.ICON_LOCATION + menuNumber + Parameters.ICON_EXPANSION));
         } catch (FileNotFoundException e) {
-            System.out.println("Icon is not found!");;
+            System.out.println("Icon is not found!");
         }
+        return null;
+    }
 
-        imageView.setImage(image);
+    private void addImageViewToToolBar(int menuNumber){
+        ImageView imageView = new ImageView();
+        imageView.setImage(getImageFromFile(menuNumber));
+        imageView.setPickOnBounds(true);
         setImageViewSize(imageView);
 
         toolBar.getItems().addAll(imageView, new Separator());
+        toolBarItems[menuNumber] = imageView;
     }
 
     private void createToolBar() {
         toolBar = new ToolBar();
-
         toolBar.setOrientation(Orientation.VERTICAL);
 
-        for(int i = 0; i < 3; i++){
-            addIcon(i);
+        for(int i = 0; i < Parameters.AMOUNT_OF_TOOLBAR_ITEMS; i++){
+            addImageViewToToolBar(i);
         }
+    }
+
+    public ImageView[] getToolBarItems() {
+        return toolBarItems;
     }
 
     public ToolBar getToolBar() {
