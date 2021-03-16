@@ -1,17 +1,19 @@
 package com.graph.editor.controller;
 
+import com.graph.editor.view.InformationDialogBuilder;
 import javafx.scene.control.MenuItem;
 
 public class MenuBarController {
 
-    MenuItem[] menuBarItems;
+    private final MenuItem[] menuBarItems;
 
     public MenuBarController(MenuItem[] menuBarItems) {
+        InformationDialogBuilder informationDialogBuilder = new InformationDialogBuilder();
         this.menuBarItems = menuBarItems;
         openFileItemClickHandler();
         saveAsItemClickHandler();
         graphTaskItemClickHandler();
-        aboutItemClickHandler();
+        aboutItemClickHandler(informationDialogBuilder);
     }
 
     private void openFileItemClickHandler(){
@@ -26,8 +28,8 @@ public class MenuBarController {
         menuBarItems[2].setOnAction(actionEvent -> System.out.println("Item 3 click"));
     }
 
-    private void aboutItemClickHandler(){
-        menuBarItems[3].setOnAction(actionEvent -> System.out.println("Item 4 click"));
+    private void aboutItemClickHandler(InformationDialogBuilder informationDialogBuilder){
+        menuBarItems[3].setOnAction(actionEvent -> informationDialogBuilder.showAndWait());
     }
 
 }

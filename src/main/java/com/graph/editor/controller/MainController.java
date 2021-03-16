@@ -1,11 +1,14 @@
 package com.graph.editor.controller;
 
+import com.graph.editor.model.CurrentTool;
+import com.graph.editor.model.Graph;
 import com.graph.editor.view.MainSceneElements;
 
 public class MainController {
 
     private final MainSceneElements mainSceneElements;
-    private Tool currentTool;
+    private final Graph graph;
+    private CurrentTool currentTool;
 
     private void createMenuBarController() {
         MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems());
@@ -16,12 +19,15 @@ public class MainController {
     }
 
     private void createPaneController() {
-        PaneController paneController = new PaneController(mainSceneElements.getPane(), currentTool);
+        PaneController paneController = new PaneController(mainSceneElements.getPane(), graph, currentTool);
     }
 
-    public MainController(MainSceneElements mainSceneElements) {
+    public MainController(MainSceneElements mainSceneElements, Graph graph) {
         this.mainSceneElements = mainSceneElements;
-        currentTool = Tool.VERTEX_TOOL;
+        this.graph = graph;
+
+        currentTool = new CurrentTool(Tool.VERTEX_TOOL);
+
         createMenuBarController();
         createToolBarController();
         createPaneController();
