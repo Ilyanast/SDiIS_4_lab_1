@@ -1,5 +1,6 @@
 package com.graph.editor.controller;
 
+import com.graph.editor.model.CurrentActiveVertex;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.Graph;
 import com.graph.editor.view.shapes.Vertex;
@@ -13,11 +14,11 @@ public class PaneController {
     private final Graph graph;
     private final Pane pane;
 
+    private final CurrentActiveVertex currentActiveVertex;
     private final CurrentTool currentTool;
-    private Vertex currentActiveVertex;
 
     public PaneController(Pane pane, Graph graph, CurrentTool currentTool) {
-        currentActiveVertex = new Vertex(0,0);
+        currentActiveVertex = new CurrentActiveVertex();
         this.currentTool = currentTool;
         this.graph = graph;
         this.pane = pane;
@@ -30,8 +31,7 @@ public class PaneController {
 
         if(mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getTarget().equals(pane)) {
             Vertex vertex = new Vertex(mouseEvent.getX(), mouseEvent.getY());
-            VertexController vertexController = new VertexController(vertex);
-            changeActiveVertex(vertex);
+            VertexController vertexController = new VertexController(currentActiveVertex, vertex);
             pane.getChildren().add(vertex.getGroup());
             graph.addVertexToGraph(vertex);
         }
@@ -59,12 +59,6 @@ public class PaneController {
                     break;
             }
         });
-    }
-
-    private void changeActiveVertex(Vertex vertex) {
-        currentActiveVertex.makeVertexInactive();
-        currentActiveVertex = vertex;
-        vertex.makeVertexActive();
     }
 
 }

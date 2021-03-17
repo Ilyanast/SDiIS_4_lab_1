@@ -1,47 +1,57 @@
 package com.graph.editor.controller;
 
+import com.graph.editor.model.CurrentActiveVertex;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
 
 public class VertexController {
 
-    private Vertex vertex;
+    private final CurrentActiveVertex currentActiveVertex;
+    private final Vertex vertex;
 
-    double orgSceneX, orgSceneY;
-    double orgTranslateX, orgTranslateY;
+    private double firstPressPosX, firstPressPosY;
 
-    public VertexController(Vertex vertex) {
+    public VertexController(CurrentActiveVertex currentActiveVertex, Vertex vertex) {
+        this.currentActiveVertex = currentActiveVertex;
         this.vertex = vertex;
+
         vertex.setOnMousePressed(vertexOnMousePressedEventHandler);
         vertex.setOnMouseDragged(vertexOnMouseDraggedEventHandler);
+        vertex.setOnMouseReleased(vertexOnMouseReleasedEventHandler);
     }
 
-    EventHandler<MouseEvent> vertexOnMousePressedEventHandler =
-            new EventHandler<MouseEvent>() {
-
+    private final EventHandler<MouseEvent> vertexOnMouseReleasedEventHandler =
+            new EventHandler<>() {
                 @Override
-                public void handle(MouseEvent t) {
-                    orgSceneX = t.getSceneX();
-                    orgSceneY = t.getSceneY();
-                    orgTranslateX = ((Circle)(t.getSource())).getTranslateX();
-                    orgTranslateY = ((Circle)(t.getSource())).getTranslateY();
+                public void handle(MouseEvent mouseEvent) {
+                    vertex.setNewPos();
                 }
             };
 
-    EventHandler<MouseEvent> vertexOnMouseDraggedEventHandler =
-            new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> vertexOnMousePressedEventHandler =
+            new EventHandler<>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    currentActiveVertex.setCurrentActiveVertex(vertex);
+
+                    firstPressPosX = mouseEvent.getSceneX();
+                    firstPressPosY = mouseEvent.getSceneY();
+                }
+            };
+
+    private final EventHandler<MouseEvent> vertexOnMouseDraggedEventHandler =
+            new EventHandler<>() {
 
                 @Override
-                public void handle(MouseEvent t) {
-                    double offsetX = t.getSceneX() - orgSceneX;
-                    double offsetY = t.getSceneY() - orgSceneY;
-                    double newTranslateX = orgTranslateX + offsetX;
-                    double newTranslateY = orgTranslateY + offsetY;
+                public void handle(MouseEvent mouseEvent) {
+                    double offsetX, offsetY;
 
-                    ((Circle)(t.getSource())).setTranslateX(newTranslateX);
-                    ((Circle)(t.getSource())).setTranslateY(newTranslateY);
+                    offsetX = mouseEvent.getSceneX() - firstPressPosX;
+                    offsetY = mouseEvent.getSceneY() - firstPressPosY;
+
+                    vertex.setTranslateX(offsetX);
+                    vertex.setTranslateY(offsetY);
                 }
             };
 

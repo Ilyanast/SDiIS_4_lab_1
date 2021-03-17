@@ -1,10 +1,8 @@
 package com.graph.editor.view.shapes;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -25,8 +23,7 @@ public class Vertex {
     private double y_pos;
 
     public Vertex(double x_pos, double y_pos) {
-        this.x_pos = x_pos;
-        this.y_pos = y_pos;
+        setPosition(x_pos, y_pos);
 
         circle = new Circle(x_pos, y_pos, CIRCLE_RADIUS);
         group = new Group();
@@ -35,6 +32,12 @@ public class Vertex {
         addElementsToGroup();
         setCircleParams();
         setLabelParams();
+        setIdentifier("Test");
+    }
+
+    private void setPosition(double x_pos, double y_pos) {
+        this.x_pos = x_pos;
+        this.y_pos = y_pos;
     }
 
     private void addElementsToGroup() {
@@ -53,6 +56,19 @@ public class Vertex {
         circle.setStrokeWidth(CIRCLE_STROKE_WIDTH);
     }
 
+    public void setNewPos() {
+        setPosition(x_pos + circle.getTranslateX(), y_pos + circle.getTranslateY());
+
+        circle.setCenterX(x_pos);
+        circle.setCenterY(y_pos);
+        circle.setTranslateX(0);
+        circle.setTranslateY(0);
+
+        label.relocate(x_pos + CIRCLE_RADIUS, y_pos + CIRCLE_RADIUS);
+        label.setTranslateX(0);
+        label.setTranslateY(0);
+    }
+
     public Group getGroup() {
         return group;
     }
@@ -69,14 +85,27 @@ public class Vertex {
         label.setText(identifier);
     }
 
-    public void setPos(double x_pos, double y_pos) {
-        this.x_pos = x_pos;
-        this.y_pos = y_pos;
+    public double getTranslateX() {
+        return circle.getTranslateX();
     }
 
-//    public void setOnMouseClicked(EventHandler<MouseEvent> mouseEvent) {
-//        circle.setOnMouseClicked(mouseEvent);
-//    }
+    public double getTranslateY() {
+        return circle.getTranslateY();
+    }
+
+    public void setTranslateX(double translateX) {
+        circle.setTranslateX(translateX);
+        label.setTranslateX(translateX);
+    }
+
+    public void setTranslateY(double translateY) {
+        circle.setTranslateY(translateY);
+        label.setTranslateY(translateY);
+    }
+
+    public void setOnMouseReleased(EventHandler<MouseEvent> mouseevent) {
+        circle.setOnMouseReleased(mouseevent);
+    }
 
     public void setOnMouseDragged(EventHandler<MouseEvent> mouseEvent) {
         circle.setOnMouseDragged(mouseEvent);

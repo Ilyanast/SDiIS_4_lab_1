@@ -8,7 +8,7 @@ public class MainController {
 
     private final MainSceneElements mainSceneElements;
     private final Graph graph;
-    private CurrentTool currentTool;
+    private final CurrentTool currentTool;
 
     private void createMenuBarController() {
         MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems());

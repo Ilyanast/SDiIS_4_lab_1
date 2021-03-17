@@ -10,7 +10,7 @@ public class Graph {
     private final List<VertexAndAdjacentVertices> graphList;
 
     public Graph() {
-        graphList = new ArrayList<VertexAndAdjacentVertices>();
+        graphList = new ArrayList<>();
     }
 
     public void addVertexToGraph(Vertex vertex) {
