@@ -6,8 +6,8 @@ public class CurrentTool {
 
     private Tool currentTool;
 
-    public CurrentTool(Tool currentTool) {
-        this.currentTool = currentTool;
+    public CurrentTool() {
+        currentTool = Tool.VERTEX_TOOL;
     }
 
     public Tool getCurrentTool() {

@@ -32,12 +32,11 @@ public class Vertex {
         addElementsToGroup();
         setCircleParams();
         setLabelParams();
-        setIdentifier("Test");
     }
 
-    private void setPosition(double x_pos, double y_pos) {
-        this.x_pos = x_pos;
-        this.y_pos = y_pos;
+    private void setPosition(double new_x_pos, double new_y_pos) {
+        x_pos = new_x_pos;
+        y_pos = new_y_pos;
     }
 
     private void addElementsToGroup() {
@@ -56,7 +55,7 @@ public class Vertex {
         circle.setStrokeWidth(CIRCLE_STROKE_WIDTH);
     }
 
-    public void setNewPos() {
+    public void updatePositionWithTranslate() {
         setPosition(x_pos + circle.getTranslateX(), y_pos + circle.getTranslateY());
 
         circle.setCenterX(x_pos);
@@ -82,15 +81,9 @@ public class Vertex {
     }
 
     public void setIdentifier(String identifier) {
-        label.setText(identifier);
-    }
-
-    public double getTranslateX() {
-        return circle.getTranslateX();
-    }
-
-    public double getTranslateY() {
-        return circle.getTranslateY();
+        if(!identifier.equals("")){
+            label.setText(identifier);
+        }
     }
 
     public void setTranslateX(double translateX) {
@@ -114,5 +107,22 @@ public class Vertex {
     public void setOnMousePressed(EventHandler<MouseEvent> mouseEvent) {
         circle.setOnMousePressed(mouseEvent);
     }
+
+    public double getCircleCenterX() {
+        return circle.getCenterX();
+    }
+
+    public double getCircleCenterY() {
+        return circle.getCenterY();
+    }
+
+    public double getCircleTranslateX() {
+        return circle.getTranslateX();
+    }
+
+    public double getCircleTranslateY() {
+        return circle.getTranslateY();
+    }
+
 
 }

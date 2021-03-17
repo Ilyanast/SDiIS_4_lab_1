@@ -1,64 +1,101 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.CurrentActiveVertex;
+import com.graph.editor.model.CurrentActiveElement;
 import com.graph.editor.model.CurrentTool;
+import com.graph.editor.model.EdgeTargetVertices;
 import com.graph.editor.model.Graph;
+import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
-import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 
 public class PaneController {
 
     private final Graph graph;
     private final Pane pane;
 
-    private final CurrentActiveVertex currentActiveVertex;
+    private final CurrentActiveElement currentActiveElement;
+    private final EdgeTargetVertices edgeTargetVertices;
     private final CurrentTool currentTool;
 
-    public PaneController(Pane pane, Graph graph, CurrentTool currentTool) {
-        currentActiveVertex = new CurrentActiveVertex();
+    public PaneController(Pane pane, Graph graph, CurrentActiveElement currentActiveElement, CurrentTool currentTool,
+                          EdgeTargetVertices edgeTargetVertices) {
+        this.currentActiveElement = currentActiveElement;
+        this.edgeTargetVertices = edgeTargetVertices;
         this.currentTool = currentTool;
         this.graph = graph;
         this.pane = pane;
-        toolClickHandler();
+
+        pane.setOnMouseClicked(this::handleMouseClick);
     }
 
-    private void handleVertexToolClick(MouseEvent mouseEvent) {
+    private void handleMouseClick(MouseEvent mouseEvent) {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+            switch (currentTool.getCurrentTool()) {
+                case VERTEX_TOOL:
+                    handleVertexToolMouseEvents(mouseEvent);
+                    break;
+                case EDGE_TOOL:
+                    handleEdgeToolMouseEvents(mouseEvent);
+                    break;
+            }
+    }
 
-        //TODO FIX ActiveVertex;
-
-        if(mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getTarget().equals(pane)) {
-            Vertex vertex = new Vertex(mouseEvent.getX(), mouseEvent.getY());
-            VertexController vertexController = new VertexController(currentActiveVertex, vertex);
-            pane.getChildren().add(vertex.getGroup());
-            graph.addVertexToGraph(vertex);
+    private void handleVertexToolMouseEvents(MouseEvent mouseEvent) {
+        if(mouseEvent.getTarget().equals(pane)) {
+            switch (mouseEvent.getClickCount()) {
+                case 1:
+                    handleOneClickEvent();
+                    break;
+                case 2:
+                    handleDoubleClickEvent(mouseEvent);
+                    break;
+            }
         }
     }
 
-    private void handleEdgeToolClick(MouseEvent mouseEvent) {
-
+    private void handleEdgeToolMouseEvents(MouseEvent mouseEvent) {
+        if(mouseEvent.getTarget().getClass().equals(Circle.class)) {
+            Vertex vertex = getVertexClickedOn(mouseEvent);
+            handleEdgeCreator(vertex);
+        }
     }
 
-    private void handleOrientedEdgeToolClick(MouseEvent mouseEvent) {
-
+    private void handleOneClickEvent() {
+        currentActiveElement.unselectAllVertices();
     }
 
-    private void toolClickHandler() {
-        pane.setOnMouseClicked(mouseEvent -> {
-            switch (currentTool.getCurrentTool()) {
-                case VERTEX_TOOL:
-                    handleVertexToolClick(mouseEvent);
-                    break;
-                case EDGE_TOOL:
-                    handleEdgeToolClick(mouseEvent);
-                    break;
-                case ORIENTED_EDGE_TOOL:
-                    handleOrientedEdgeToolClick(mouseEvent);
-                    break;
-            }
-        });
+    private void handleDoubleClickEvent(MouseEvent mouseEvent) {
+        Vertex vertex = new Vertex(mouseEvent.getX(), mouseEvent.getY());
+        VertexController vertexController = new VertexController(currentTool, currentActiveElement, vertex);
+        pane.getChildren().add(vertex.getGroup());
+        graph.addVertexToGraph(vertex);
     }
 
+    private Vertex getVertexClickedOn(MouseEvent mouseEvent) {
+        Circle circle = (Circle) mouseEvent.getTarget();
+        Group group = (Group) circle.getParent();
+        return graph.getVertexByGroup(group);
+    }
+
+    private void handleEdgeCreator(Vertex vertex) {
+        if(edgeTargetVertices.isWaitForSecondClick()) {
+            Edge edge = new Edge(edgeTargetVertices.getFirstVertex(), vertex);
+            EdgeController edgeController = new EdgeController(currentTool, currentActiveElement, edge);
+            putVerticesOverEdge(vertex, edge);
+            edgeTargetVertices.clear();
+            graph.addEdge(edge);
+        }
+        else {
+            edgeTargetVertices.setFirstVertex(vertex);
+        }
+    }
+
+    private void putVerticesOverEdge(Vertex vertex, Edge edge) {
+        pane.getChildren().removeAll(edgeTargetVertices.getFirstVertex().getGroup(), vertex.getGroup());
+        pane.getChildren().addAll(edge.getGroup(), edgeTargetVertices.getFirstVertex().getGroup(), vertex.getGroup());
+    }
 }

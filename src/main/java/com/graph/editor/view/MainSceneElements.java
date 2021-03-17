@@ -1,5 +1,6 @@
 package com.graph.editor.view;
 
+import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,7 @@ public class MainSceneElements {
 
     private ImageView[] toolBarItems;
     private MenuItem[] menuBarItems;
+    private Scene activeScene;
     private Pane pane;
 
     public ImageView[] getToolBarItems() {
@@ -17,6 +19,10 @@ public class MainSceneElements {
 
     public MenuItem[] getMenuBarItems() {
         return menuBarItems;
+    }
+
+    public Scene getActiveScene() {
+        return activeScene;
     }
 
     public Pane getPane() {
@@ -29,6 +35,10 @@ public class MainSceneElements {
 
     public void setMenuBarItems(MenuItem[] menuBarItems) {
         this.menuBarItems = menuBarItems;
+    }
+
+    public void setActiveScene(Scene activeScene) {
+        this.activeScene = activeScene;
     }
 
     public void setPane(Pane pane) {

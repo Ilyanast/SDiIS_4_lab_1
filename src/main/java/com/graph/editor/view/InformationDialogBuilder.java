@@ -7,7 +7,6 @@ public class InformationDialogBuilder {
     private static final String DIALOG_TITLE = "SDiIS Graph Editor";
     private static final String DIALOG_CONTENT_TEXT = "Developed by Nastachkin Ilya Sergeevich. Group 921702.";
 
-
     Alert alert;
 
     public InformationDialogBuilder() {

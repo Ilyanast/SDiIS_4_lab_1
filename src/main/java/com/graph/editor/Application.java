@@ -12,9 +12,8 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) {
-        Graph graph = new Graph();
         MainView mainView = new MainView();
-        MainController mainController = new MainController(mainView.getMainSceneElements(), graph);
+        MainController mainController = new MainController(mainView.getMainSceneElements());
         setStageParams(stage, mainView.getActiveScene());
     }
 

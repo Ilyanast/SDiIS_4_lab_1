@@ -16,6 +16,7 @@ public class MainView {
     private void setMainSceneElements() {
         mainSceneElements.setToolBarItems(mainSceneBuilder.getToolBarItems());
         mainSceneElements.setMenuBarItems(mainSceneBuilder.getMenuBarItems());
+        mainSceneElements.setActiveScene(mainSceneBuilder.getActiveScene());
         mainSceneElements.setPane(mainSceneBuilder.getPane());
     }
 
