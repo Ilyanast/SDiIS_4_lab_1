@@ -85,8 +85,8 @@ public class PaneController {
         if(edgeTargetVertices.isWaitForSecondClick()) {
             Edge edge = new Edge(edgeTargetVertices.getFirstVertex(), vertex);
             EdgeController edgeController = new EdgeController(currentTool, currentActiveElement, edge);
-            putVerticesOverEdge(vertex, edge);
-            edgeTargetVertices.clear();
+            //putVerticesOverEdge(vertex, edge);
+            //edgeTargetVertices.clear();
             graph.addEdge(edge);
         }
         else {

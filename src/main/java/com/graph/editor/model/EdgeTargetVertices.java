@@ -5,7 +5,6 @@ import com.graph.editor.view.shapes.Vertex;
 public class EdgeTargetVertices {
 
     private Vertex firstVertex;
-    private Vertex secondVertex;
 
     public Vertex getFirstVertex() {
         return firstVertex;
@@ -15,29 +14,12 @@ public class EdgeTargetVertices {
         this.firstVertex = firstVertex;
     }
 
-    public Vertex getSecondVertex() {
-        return secondVertex;
-    }
-
-//    public void setSecondVertex(Vertex secondVertex) {
-//        this.secondVertex = secondVertex;
-//    }
-
     public boolean isWaitForSecondClick() {
-        if(firstVertex != null && secondVertex == null) {
-            return true;
-        }
-        else if(firstVertex == null) {
-            return false;
-        }
-        else {
-            return false;
-        }
+        return firstVertex != null;
     }
 
     public void clear() {
         firstVertex = null;
-        secondVertex = null;
     }
 
 }

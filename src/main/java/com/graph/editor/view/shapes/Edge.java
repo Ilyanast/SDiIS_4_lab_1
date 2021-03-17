@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 public class Edge {
 
     //TODO Сделать setOnCLICK и makeActive
+    //TODO Придумать, что как получить из обновить из VertexController координаты
 
     private static final int FONT_SIZE = 14;
     private static final int LINE_WIDTH = 5;
@@ -38,13 +39,10 @@ public class Edge {
         group = new Group();
     }
 
-    private void addEdgeToVerticesChildren(){
-        sourceVertex.getGroup().getChildren().
-    }
+
 
     private void addElementsToGroup() {
         group.getChildren().addAll(line, label);
-
     }
 
     private void setLabelParams() {

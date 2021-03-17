@@ -2,7 +2,11 @@ package com.graph.editor.controller;
 
 import com.graph.editor.model.CurrentActiveElement;
 import com.graph.editor.model.CurrentTool;
+import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
+import javafx.collections.ObservableList;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
 public class VertexController {
@@ -19,8 +23,8 @@ public class VertexController {
         this.vertex = vertex;
 
         vertex.setOnMousePressed(this::handleVertexToolOnMousePressedEvent);
-        vertex.setOnMouseDragged(this::handleVertexToolOnMouseReleasedEvent);
-        vertex.setOnMouseReleased(this::handleVertexToolOnMouseDraggedEvent);
+        vertex.setOnMouseDragged(this::handleVertexToolOnMouseDraggedEvent);
+        vertex.setOnMouseReleased(this::handleVertexToolOnMouseReleasedEvent);
     }
 
 
@@ -44,10 +48,16 @@ public class VertexController {
             double offsetY = mouseEvent.getSceneY() - firstPressPosY;
             vertex.setTranslateX(offsetX);
             vertex.setTranslateY(offsetY);
+            updateConnectedEdges();
         }
     }
 
-
+    private void updateConnectedEdges() {
+        ObservableList<Node> vertexChildren = vertex.getGroup().getChildren();
+        for (Node vertexChild : vertexChildren) {
+            System.out.println(vertexChild.getClass().equals(Group.class));
+        }
+    }
 
 }
 
