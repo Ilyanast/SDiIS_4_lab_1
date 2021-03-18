@@ -1,61 +1,63 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.CurrentActiveElement;
+import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
+import com.graph.editor.model.Graph;
 import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
-import javafx.collections.ObservableList;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+
+import java.util.List;
 
 public class VertexController {
 
-    private final CurrentActiveElement currentActiveElement;
+    private final SelectedElement selectedElement;
     private final CurrentTool currentTool;
     private final Vertex vertex;
+    private final Graph graph;
 
     private double firstPressPosX, firstPressPosY;
 
-    public VertexController(CurrentTool currentTool, CurrentActiveElement currentActiveElement, Vertex vertex) {
-        this.currentActiveElement = currentActiveElement;
+    public VertexController(CurrentTool currentTool, SelectedElement selectedElement, Graph graph, Vertex vertex) {
+        this.selectedElement = selectedElement;
         this.currentTool = currentTool;
         this.vertex = vertex;
+        this.graph = graph;
 
-        vertex.setOnMousePressed(this::handleVertexToolOnMousePressedEvent);
-        vertex.setOnMouseDragged(this::handleVertexToolOnMouseDraggedEvent);
-        vertex.setOnMouseReleased(this::handleVertexToolOnMouseReleasedEvent);
+        vertex.setOnMousePressed(this::handleOnMousePressedEvent);
+        vertex.setOnMouseDragged(this::handleOnMouseDraggedEvent);
+        vertex.setOnMouseReleased(this::handleOnMouseReleasedEvent);
     }
 
 
-    private void handleVertexToolOnMousePressedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.VERTEX_TOOL) {
-            currentActiveElement.selectActiveVertex(vertex);
+    private void handleOnMousePressedEvent(MouseEvent mouseEvent) {
+        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
+            selectedElement.setSelectedElement(vertex);
             firstPressPosX = mouseEvent.getSceneX();
             firstPressPosY = mouseEvent.getSceneY();
         }
     }
 
-    private void handleVertexToolOnMouseReleasedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.VERTEX_TOOL) {
+    private void handleOnMouseReleasedEvent(MouseEvent mouseEvent) {
+        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
             vertex.updatePositionWithTranslate();
         }
     }
 
-    private void handleVertexToolOnMouseDraggedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.VERTEX_TOOL) {
+    private void handleOnMouseDraggedEvent(MouseEvent mouseEvent) {
+        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
             double offsetX = mouseEvent.getSceneX() - firstPressPosX;
             double offsetY = mouseEvent.getSceneY() - firstPressPosY;
             vertex.setTranslateX(offsetX);
             vertex.setTranslateY(offsetY);
-            updateConnectedEdges();
+            updateConnectedEdges(vertex);
         }
     }
 
-    private void updateConnectedEdges() {
-        ObservableList<Node> vertexChildren = vertex.getGroup().getChildren();
-        for (Node vertexChild : vertexChildren) {
-            System.out.println(vertexChild.getClass().equals(Group.class));
+    private void updateConnectedEdges(Vertex vertex) {
+        List<Edge> edgeList = graph.getListOfConnectedEdges(vertex);
+        for(Edge edge : edgeList) {
+            edge.updateEdgeCoords();
         }
     }
 

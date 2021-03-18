@@ -1,6 +1,6 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.CurrentActiveElement;
+import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.EdgeTargetVertices;
 import com.graph.editor.model.Graph;
@@ -9,7 +9,7 @@ import com.graph.editor.view.MainSceneElements;
 public class MainController {
 
     private final MainSceneElements mainSceneElements;
-    private CurrentActiveElement currentActiveElement;
+    private SelectedElement selectedElement;
     private EdgeTargetVertices edgeTargetVertices;
     private CurrentTool currentTool;
     private Graph graph;
@@ -28,12 +28,12 @@ public class MainController {
         graph = new Graph();
         currentTool = new CurrentTool();
         edgeTargetVertices = new EdgeTargetVertices();
-        currentActiveElement = new CurrentActiveElement();
+        selectedElement = new SelectedElement();
     }
 
     private  void createSceneController() {
         SceneController sceneController = new SceneController(mainSceneElements.getActiveScene(),
-                             mainSceneElements.getPane(), graph, currentTool, currentActiveElement, edgeTargetVertices);
+                             mainSceneElements.getPane(), graph, currentTool, selectedElement, edgeTargetVertices);
     }
 
     private void createMenuBarController() {
@@ -45,7 +45,7 @@ public class MainController {
     }
 
     private void createPaneController() {
-        PaneController paneController = new PaneController(mainSceneElements.getPane(), graph, currentActiveElement,
+        PaneController paneController = new PaneController(mainSceneElements.getPane(), graph, selectedElement,
                                                                                       currentTool, edgeTargetVertices);
     }
 

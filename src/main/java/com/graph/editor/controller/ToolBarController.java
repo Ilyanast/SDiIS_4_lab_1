@@ -6,9 +6,10 @@ import javafx.scene.image.ImageView;
 
 public class ToolBarController {
 
+    //TODO Сделать графическое выделение текущего тула.
+
     private final ImageView[] toolBarElements;
     private CurrentTool currentTool;
-
 
     public ToolBarController(ImageView[] toolBarElements, CurrentTool currentTool) {
         this.toolBarElements = toolBarElements;
@@ -19,7 +20,7 @@ public class ToolBarController {
     }
 
     private void vertexToolClickHandler(){
-        toolBarElements[0].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(Tool.VERTEX_TOOL));
+        toolBarElements[0].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(Tool.HAND_TOOL));
     }
 
     private void edgeToolClickHandler(){

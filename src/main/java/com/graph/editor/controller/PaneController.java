@@ -1,6 +1,6 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.CurrentActiveElement;
+import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.EdgeTargetVertices;
 import com.graph.editor.model.Graph;
@@ -17,13 +17,13 @@ public class PaneController {
     private final Graph graph;
     private final Pane pane;
 
-    private final CurrentActiveElement currentActiveElement;
+    private final SelectedElement selectedElement;
     private final EdgeTargetVertices edgeTargetVertices;
     private final CurrentTool currentTool;
 
-    public PaneController(Pane pane, Graph graph, CurrentActiveElement currentActiveElement, CurrentTool currentTool,
+    public PaneController(Pane pane, Graph graph, SelectedElement selectedElement, CurrentTool currentTool,
                           EdgeTargetVertices edgeTargetVertices) {
-        this.currentActiveElement = currentActiveElement;
+        this.selectedElement = selectedElement;
         this.edgeTargetVertices = edgeTargetVertices;
         this.currentTool = currentTool;
         this.graph = graph;
@@ -35,7 +35,7 @@ public class PaneController {
     private void handleMouseClick(MouseEvent mouseEvent) {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
             switch (currentTool.getCurrentTool()) {
-                case VERTEX_TOOL:
+                case HAND_TOOL:
                     handleVertexToolMouseEvents(mouseEvent);
                     break;
                 case EDGE_TOOL:
@@ -65,12 +65,12 @@ public class PaneController {
     }
 
     private void handleOneClickEvent() {
-        currentActiveElement.unselectAllVertices();
+        selectedElement.deselectElement();
     }
 
     private void handleDoubleClickEvent(MouseEvent mouseEvent) {
         Vertex vertex = new Vertex(mouseEvent.getX(), mouseEvent.getY());
-        VertexController vertexController = new VertexController(currentTool, currentActiveElement, vertex);
+        VertexController vertexController = new VertexController(currentTool, selectedElement, graph, vertex);
         pane.getChildren().add(vertex.getGroup());
         graph.addVertexToGraph(vertex);
     }
@@ -84,9 +84,9 @@ public class PaneController {
     private void handleEdgeCreator(Vertex vertex) {
         if(edgeTargetVertices.isWaitForSecondClick()) {
             Edge edge = new Edge(edgeTargetVertices.getFirstVertex(), vertex);
-            EdgeController edgeController = new EdgeController(currentTool, currentActiveElement, edge);
-            //putVerticesOverEdge(vertex, edge);
-            //edgeTargetVertices.clear();
+            EdgeController edgeController = new EdgeController(currentTool, selectedElement, edge);
+            putVerticesOverEdge(vertex, edge);
+            edgeTargetVertices.clear();
             graph.addEdge(edge);
         }
         else {

@@ -1,5 +1,6 @@
 package com.graph.editor.view.shapes;
 
+import com.graph.editor.model.Selectable;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -9,7 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
-public class Vertex {
+public class Vertex implements Selectable {
+
+    //TODO УБрать translation
 
     private static final int CIRCLE_RADIUS = 10;
     private static final int CIRCLE_STROKE_WIDTH = 3;
@@ -72,11 +75,11 @@ public class Vertex {
         return group;
     }
 
-    public void makeVertexActive() {
+    public void makeActive() {
         circle.setStroke(Color.GREEN);
     }
 
-    public void makeVertexInactive() {
+    public void makeInactive() {
         circle.setStroke(Color.BLACK);
     }
 

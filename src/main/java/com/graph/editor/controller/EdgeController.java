@@ -1,20 +1,28 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.CurrentActiveElement;
+import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.view.shapes.Edge;
+import javafx.scene.input.MouseEvent;
 
 public class EdgeController {
 
-    //TODO Написать котроллер
-
-    private final CurrentActiveElement currentActiveElement;
+    private final SelectedElement selectedElement;
     private final CurrentTool currentTool;
     private final Edge edge;
 
-    public EdgeController(CurrentTool currentTool, CurrentActiveElement currentActiveElement, Edge edge) {
-        this.currentActiveElement = currentActiveElement;
+    public EdgeController(CurrentTool currentTool, SelectedElement selectedElement, Edge edge) {
+        this.selectedElement = selectedElement;
         this.currentTool = currentTool;
         this.edge = edge;
+
+        edge.setOnMouseClicked(this::handleOnMouseClickedEvent);
     }
+
+    private void handleOnMouseClickedEvent(MouseEvent mouseEvent) {
+        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
+            selectedElement.setSelectedElement(edge);
+        }
+    }
+
 }

@@ -7,7 +7,7 @@ public class CurrentTool {
     private Tool currentTool;
 
     public CurrentTool() {
-        currentTool = Tool.VERTEX_TOOL;
+        currentTool = Tool.HAND_TOOL;
     }
 
     public Tool getCurrentTool() {

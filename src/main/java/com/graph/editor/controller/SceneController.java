@@ -1,25 +1,32 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.CurrentActiveElement;
+import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.EdgeTargetVertices;
 import com.graph.editor.model.Graph;
 import com.graph.editor.view.TextInputDialogBuilder;
+import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
+
 public class SceneController {
+
+    //TODO Сделать выбор инструмента по кнопке
 
     private final Pane pane;
     private final Graph graph;
     private final CurrentTool currentTool;
     private final EdgeTargetVertices edgeTargetVertices;
-    private final CurrentActiveElement currentActiveElement;
+    private final SelectedElement selectedElement;
 
     public SceneController(Scene activeScene, Pane pane, Graph graph, CurrentTool currentTool,
-                           CurrentActiveElement currentActiveElement, EdgeTargetVertices edgeTargetVertices) {
-        this.currentActiveElement = currentActiveElement;
+                           SelectedElement selectedElement, EdgeTargetVertices edgeTargetVertices) {
+        this.selectedElement = selectedElement;
         this.edgeTargetVertices = edgeTargetVertices;
         this.currentTool = currentTool;
         this.graph = graph;
@@ -30,8 +37,8 @@ public class SceneController {
 
     private void handleSceneKeyEvents(KeyEvent keyEvent) {
         switch (currentTool.getCurrentTool()) {
-            case VERTEX_TOOL:
-                handleVertexToolKeyEvents(keyEvent);
+            case HAND_TOOL:
+                handleHandToolKeyEvents(keyEvent);
                 break;
             case EDGE_TOOL:
                 handleEdgeToolKeyEvents(keyEvent);
@@ -39,44 +46,79 @@ public class SceneController {
         }
     }
 
-    private void handleVertexToolKeyEvents(KeyEvent keyEvent) {
-        if(currentActiveElement.isAnyVertexActive()){
+    private void handleHandToolKeyEvents(KeyEvent keyEvent) {
+        if(selectedElement.isElementSelected()){
             switch (keyEvent.getCode()) {
                 case DELETE:
                     handleDeleteKeyEvent();
                     break;
                 case I:
-                    handleIKeyEvent();
+                    //handleIKeyEvent();
                     break;
             }
         }
     }
 
     private void handleEdgeToolKeyEvents(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case ESCAPE:
-                handleEscapeKeyEvent();
-                break;
+        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+            handleEscapeKeyEvent();
         }
     }
 
     private void handleDeleteKeyEvent() {
-        pane.getChildren().removeIf(vertices -> vertices.equals(currentActiveElement.getCurrentActiveVertex().getGroup()));
-        graph.removeVertex(currentActiveElement.getCurrentActiveVertex());
-        currentActiveElement.unselectAllVertices();
+        if (selectedElement.getSelectedElement() instanceof Vertex) {
+            deleteVertex((Vertex) selectedElement.getSelectedElement());
+        }
+        else if (selectedElement.getSelectedElement() instanceof Edge) {
+            deleteEdge((Edge) selectedElement.getSelectedElement());
+        }
     }
 
-    private void handleIKeyEvent() {
-
-        //TODO Сделать switch исходя из типа активного элемента
-
-
-        TextInputDialogBuilder textInputDialogBuilder = new TextInputDialogBuilder();
-        currentActiveElement.getCurrentActiveVertex().setIdentifier(textInputDialogBuilder.getIdentifier());
-    }
+//    private void handleIKeyEvent() {
+//        TextInputDialogBuilder textInputDialogBuilder = new TextInputDialogBuilder();
+//        switch (selectedElement.getActiveElementType()) {
+//            case VERTEX:
+//                handleIKeyVertexEvent(textInputDialogBuilder);
+//                break;
+//            case EDGE:
+//                handleIKeyEdgeEvent(textInputDialogBuilder);
+//                break;
+//        }
+//    }
 
     private void handleEscapeKeyEvent() {
         edgeTargetVertices.clear();
+    }
+
+    private void handleIKeyVertexEvent(TextInputDialogBuilder textInputDialogBuilder) {
+        Vertex currentActiveVertex = (Vertex) selectedElement.getSelectedElement();
+        currentActiveVertex.setIdentifier(textInputDialogBuilder.getIdentifier());
+    }
+
+    private void handleIKeyEdgeEvent(TextInputDialogBuilder textInputDialogBuilder) {
+        Edge currentActiveEdge = (Edge) selectedElement.getSelectedElement();
+        currentActiveEdge.setIdentifier(textInputDialogBuilder.getIdentifier());
+    }
+
+    private void deleteVertex(Vertex vertex) {
+        List<Edge> connectedEdges = graph.getListOfConnectedEdges(vertex);
+        pane.getChildren().removeIf(elements -> elements.equals(vertex.getGroup()));
+        removeConnectedEdgesFromPane(connectedEdges);
+        graph.removeVertex(vertex);
+        selectedElement.deselectElement();
+    }
+
+    private void deleteEdge(Edge edge) {
+        pane.getChildren().removeIf(elements -> elements.equals(edge.getGroup()));
+        graph.removeEdge(edge);
+        selectedElement.deselectElement();
+    }
+
+    private void removeConnectedEdgesFromPane(List<Edge> connectedEdges) {
+        for (Edge connectedEdge : connectedEdges) {
+            pane.getChildren().remove(connectedEdge.getGroup());
+        }
+
     }
 
 }
