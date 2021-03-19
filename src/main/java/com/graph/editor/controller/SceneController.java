@@ -53,7 +53,7 @@ public class SceneController {
                     handleDeleteKeyEvent();
                     break;
                 case I:
-                    //handleIKeyEvent();
+                    handleIKeyEvent();
                     break;
             }
         }
@@ -74,30 +74,28 @@ public class SceneController {
         }
     }
 
-//    private void handleIKeyEvent() {
-//        TextInputDialogBuilder textInputDialogBuilder = new TextInputDialogBuilder();
-//        switch (selectedElement.getActiveElementType()) {
-//            case VERTEX:
-//                handleIKeyVertexEvent(textInputDialogBuilder);
-//                break;
-//            case EDGE:
-//                handleIKeyEdgeEvent(textInputDialogBuilder);
-//                break;
-//        }
-//    }
+    //TODO Добавить интерфейс с методом setIdentifier
+
+    private void handleIKeyEvent() {
+        TextInputDialogBuilder textInputDialogBuilder = new TextInputDialogBuilder();
+        if(selectedElement.getSelectedElement() instanceof Vertex) {
+            setVertexIdentifier((Vertex) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
+        }
+        else if(selectedElement.getSelectedElement() instanceof Edge) {
+            setEdgeIdentifier((Edge) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
+        }
+    }
 
     private void handleEscapeKeyEvent() {
         edgeTargetVertices.clear();
     }
 
-    private void handleIKeyVertexEvent(TextInputDialogBuilder textInputDialogBuilder) {
-        Vertex currentActiveVertex = (Vertex) selectedElement.getSelectedElement();
-        currentActiveVertex.setIdentifier(textInputDialogBuilder.getIdentifier());
+    private void setEdgeIdentifier(Edge edge, String identifier) {
+        edge.setIdentifier(identifier);
     }
 
-    private void handleIKeyEdgeEvent(TextInputDialogBuilder textInputDialogBuilder) {
-        Edge currentActiveEdge = (Edge) selectedElement.getSelectedElement();
-        currentActiveEdge.setIdentifier(textInputDialogBuilder.getIdentifier());
+    private void setVertexIdentifier(Vertex vertex, String identifier) {
+        vertex.setIdentifier(identifier);
     }
 
     private void deleteVertex(Vertex vertex) {
