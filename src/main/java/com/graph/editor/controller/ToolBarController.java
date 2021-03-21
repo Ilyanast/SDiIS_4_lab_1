@@ -20,15 +20,15 @@ public class ToolBarController {
     }
 
     private void vertexToolClickHandler(){
-        toolBarElements[0].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(Tool.HAND_TOOL));
+        toolBarElements[0].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(ToolType.HAND_TOOL));
     }
 
     private void edgeToolClickHandler(){
-        toolBarElements[1].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(Tool.EDGE_TOOL));
+        toolBarElements[1].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(ToolType.EDGE_TOOL));
     }
 
     private void orientedEdgeToolClickHandler(){
-        toolBarElements[2].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(Tool.ORIENTED_EDGE_TOOL));
+        toolBarElements[2].setOnMouseClicked(mouseEvent -> currentTool.setCurrentTool(ToolType.ORIENTED_EDGE_TOOL));
     }
 
 }

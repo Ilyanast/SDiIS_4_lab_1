@@ -33,7 +33,10 @@ public class PaneController {
     }
 
     private void handleMouseClick(MouseEvent mouseEvent) {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        if(mouseEvent.getButton() == MouseButton.PRIMARY) {
+            if(mouseEvent.getClickCount() == 1 && mouseEvent.getTarget().equals(pane)) {
+                selectedElement.deselectElement();
+            }
             switch (currentTool.getCurrentTool()) {
                 case HAND_TOOL:
                     handleVertexToolMouseEvents(mouseEvent);
@@ -42,6 +45,8 @@ public class PaneController {
                     handleEdgeToolMouseEvents(mouseEvent);
                     break;
             }
+        }
+
     }
 
     private void handleVertexToolMouseEvents(MouseEvent mouseEvent) {
@@ -62,10 +67,6 @@ public class PaneController {
             Vertex vertex = getVertexClickedOn(mouseEvent);
             handleEdgeCreator(vertex);
         }
-    }
-
-    private void handleOneClickEvent() {
-        selectedElement.deselectElement();
     }
 
     private void handleDoubleClickEvent(MouseEvent mouseEvent) {

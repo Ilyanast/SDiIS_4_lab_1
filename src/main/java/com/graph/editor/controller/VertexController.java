@@ -31,7 +31,7 @@ public class VertexController {
 
 
     private void handleOnMousePressedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
+        if (currentTool.getCurrentTool() == ToolType.HAND_TOOL) {
             selectedElement.setSelectedElement(vertex);
             firstPressPosX = mouseEvent.getSceneX();
             firstPressPosY = mouseEvent.getSceneY();
@@ -39,13 +39,13 @@ public class VertexController {
     }
 
     private void handleOnMouseReleasedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
+        if (currentTool.getCurrentTool() == ToolType.HAND_TOOL) {
             vertex.updatePositionWithTranslate();
         }
     }
 
     private void handleOnMouseDraggedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
+        if (currentTool.getCurrentTool() == ToolType.HAND_TOOL) {
             double offsetX = mouseEvent.getSceneX() - firstPressPosX;
             double offsetY = mouseEvent.getSceneY() - firstPressPosY;
             vertex.setTranslateX(offsetX);

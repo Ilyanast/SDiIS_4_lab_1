@@ -1,20 +1,20 @@
 package com.graph.editor.model;
 
-import com.graph.editor.controller.Tool;
+import com.graph.editor.controller.ToolType;
 
 public class CurrentTool {
 
-    private Tool currentTool;
+    private ToolType currentToolType;
 
     public CurrentTool() {
-        currentTool = Tool.HAND_TOOL;
+        currentToolType = ToolType.HAND_TOOL;
     }
 
-    public Tool getCurrentTool() {
-        return currentTool;
+    public ToolType getCurrentTool() {
+        return currentToolType;
     }
 
-    public void setCurrentTool(Tool currentTool) {
-        this.currentTool = currentTool;
+    public void setCurrentTool(ToolType currentToolType) {
+        this.currentToolType = currentToolType;
     }
 }

@@ -20,7 +20,7 @@ public class EdgeController {
     }
 
     private void handleOnMouseClickedEvent(MouseEvent mouseEvent) {
-        if (currentTool.getCurrentTool() == Tool.HAND_TOOL) {
+        if (currentTool.getCurrentTool() == ToolType.HAND_TOOL) {
             selectedElement.setSelectedElement(edge);
         }
     }

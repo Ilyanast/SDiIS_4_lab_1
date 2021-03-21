@@ -21,12 +21,12 @@ public class Graph {
     }
 
     public Vertex getVertexByGroup(Group group) {
-        for (VertexAndAdjacentVertices vertexAndAdjacentVertices : graphList) {
-            if (vertexAndAdjacentVertices.getVertex().getGroup() == group) {
-                return vertexAndAdjacentVertices.getVertex();
-            }
-        }
-        return null;
+        return graphList
+                .stream()
+                .map(VertexAndAdjacentVertices::getVertex)
+                .filter(vertex -> vertex.getGroup() == group)
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Edge> getListOfConnectedEdges(Vertex vertex) {
@@ -64,11 +64,11 @@ public class Graph {
         graphList.add(new VertexAndAdjacentVertices(vertex));
     }
 
-    public void removeVertex(Vertex vertexToDelete) {
-        List<Edge> connectedEdges = getListOfConnectedEdges(vertexToDelete);
-        for (Edge connectedEdge : connectedEdges) {
-            removeEdge(connectedEdge);
-        }
-        graphList.removeIf(vertexAndAdjacentVertices -> vertexAndAdjacentVertices.getVertex() == vertexToDelete);
+    public void removeVertex(Vertex vertex) {
+        getListOfConnectedEdges(vertex)
+                .forEach(this::removeEdge);
+
+        graphList
+                .removeIf(vertexAndAdjacentVertices -> vertexAndAdjacentVertices.getVertex() == vertex);
     }
 }
