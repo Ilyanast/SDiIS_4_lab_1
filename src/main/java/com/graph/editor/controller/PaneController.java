@@ -14,6 +14,8 @@ import javafx.scene.shape.Circle;
 
 public class PaneController {
 
+    //TODO Сделать через stream
+
     private final Graph graph;
     private final Pane pane;
 
@@ -53,7 +55,7 @@ public class PaneController {
         if(mouseEvent.getTarget().equals(pane)) {
             switch (mouseEvent.getClickCount()) {
                 case 1:
-                    handleOneClickEvent();
+                    selectedElement.deselectElement();
                     break;
                 case 2:
                     handleDoubleClickEvent(mouseEvent);
@@ -99,4 +101,5 @@ public class PaneController {
         pane.getChildren().removeAll(edgeTargetVertices.getFirstVertex().getGroup(), vertex.getGroup());
         pane.getChildren().addAll(edge.getGroup(), edgeTargetVertices.getFirstVertex().getGroup(), vertex.getGroup());
     }
+
 }

@@ -10,95 +10,86 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
+import static com.graph.editor.model.Parameters.FONT_SIZE;
+import static com.graph.editor.model.Parameters.FONT_TYPE;
+
 public class Edge implements Selectable {
 
-    //TODO Пофиксить label;
     //TODO Пофиксить дугу к самому себе
 
-    private static final int FONT_SIZE = 14;
     private static final int LINE_WIDTH = 5;
 
-    private Group group;
-    private Label label;
-    private Line line;
+    private final Group group;
+    private final Line line;
+    private final Label label;
 
-    private final Vertex sourceVertex;
-    private final Vertex targetVertex;
+    private Vertex sourceVertex;
+    private Vertex targetVertex;
+
 
 
     public Edge(Vertex sourceVertex, Vertex targetVertex) {
-        this.sourceVertex = sourceVertex;
-        this.targetVertex = targetVertex;
+        setVertices(sourceVertex, targetVertex);
 
-        createAllElements();
-        addElementsToGroup();
-        setLineParams();
-        setLabelParams();
-    }
-
-
-    private  void createAllElements(){
         line = new Line();
         label = new Label();
         group = new Group();
+
+        setLineParams();
+        setLabelParams();
+        addElementsToGroup();
+    }
+
+
+
+    private void setVertices(Vertex sourceVertex, Vertex targetVertex) {
+        this.sourceVertex = sourceVertex;
+        this.targetVertex = targetVertex;
     }
 
     private void addElementsToGroup() {
         group.getChildren().addAll(line, label);
     }
 
-    private void updateLineCoords() {
-        line.setStartX(sourceVertex.getCircleCenterX() + sourceVertex.getCircleTranslateX());
-        line.setStartY(sourceVertex.getCircleCenterY() + sourceVertex.getCircleTranslateY());
-        line.setEndX(targetVertex.getCircleCenterX() + targetVertex.getCircleTranslateX());
-        line.setEndY(targetVertex.getCircleCenterY() + targetVertex.getCircleTranslateY());
-    }
-
-    private void updateLabelCoords() {
-
-        //TODO Сделать if circleTR == 0 у конкретной вершины, чтобы сделать измененние положения у 2х вершин.
-
-        double x_pos = (targetVertex.getCircleCenterX() + targetVertex.getCircleTranslateX() -
-                            sourceVertex.getCircleCenterX() + sourceVertex.getCircleTranslateY())/2.0 +
-                                sourceVertex.getCircleCenterX() + sourceVertex.getCircleTranslateX();
-
-        double y_pos = (targetVertex.getCircleCenterY() + targetVertex.getCircleTranslateY() -
-                            sourceVertex.getCircleCenterY() + sourceVertex.getCircleTranslateY())/2.0 + 5 +
-                                sourceVertex.getCircleCenterY() + sourceVertex.getCircleTranslateY();
-
-        label.relocate(x_pos, y_pos);
-    }
-
-    private void setLabelParams() {
-        label.relocate((targetVertex.getCircleCenterX() - sourceVertex.getCircleCenterX())/2.0 + sourceVertex.getCircleCenterX(),
-                (targetVertex.getCircleCenterY() - sourceVertex.getCircleCenterY())/2.0 + 5 + sourceVertex.getCircleCenterY());
-        label.setFont(new Font("Times New Roman", FONT_SIZE));
-    }
-
     private void setLineParams() {
-        updateEdgeCoords();
+        updateEdgePosition();
         line.setCursor(Cursor.HAND);
         line.setStroke(Color.BLACK);
         line.setStrokeWidth(LINE_WIDTH);
     }
 
-    public void updateEdgeCoords() {
-        updateLabelCoords();
-        updateLineCoords();
+    private void setLabelParams() {
+        updateLabelPosition();
+        label.setFont(new Font(FONT_TYPE, FONT_SIZE));
+    }
+
+    private void updateLinePosition() {
+        line.setStartX(sourceVertex.getCircleCenterX());
+        line.setStartY(sourceVertex.getCircleCenterY());
+        line.setEndX(targetVertex.getCircleCenterX());
+        line.setEndY(targetVertex.getCircleCenterY());
+    }
+
+    private void updateLabelPosition() {
+        label.relocate((targetVertex.getCircleCenterX() + sourceVertex.getCircleCenterX())/2.0,
+                (targetVertex.getCircleCenterY() + sourceVertex.getCircleCenterY())/2.0 + 10);
+    }
+
+
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void updateEdgePosition() {
+        updateLabelPosition();
+        updateLinePosition();
     }
 
     public void setIdentifier(String identifier) {
         if(!identifier.equals("")){
             label.setText(identifier);
         }
-    }
-
-    public Vertex getSourceVertex() {
-        return sourceVertex;
-    }
-
-    public Vertex getTargetVertex() {
-        return targetVertex;
     }
 
     public void makeActive() {
@@ -113,8 +104,12 @@ public class Edge implements Selectable {
         line.setOnMouseClicked(mouseEvent);
     }
 
-    public Group getGroup() {
-        return group;
+    public Vertex getSourceVertex() {
+        return sourceVertex;
+    }
+
+    public Vertex getTargetVertex() {
+        return targetVertex;
     }
 
 }

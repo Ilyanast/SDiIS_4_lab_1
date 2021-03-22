@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 public class Graph {
 
-    //TODO Поюзать stream API
-
     private final List<VertexAndAdjacentVertices> graphList;
     private final List<Edge> edgeList;
 

@@ -74,8 +74,6 @@ public class SceneController {
         }
     }
 
-    //TODO Добавить интерфейс с методом setIdentifier
-
     private void handleIKeyEvent() {
         TextInputDialogBuilder textInputDialogBuilder = new TextInputDialogBuilder();
         if(selectedElement.getSelectedElement() instanceof Vertex) {
