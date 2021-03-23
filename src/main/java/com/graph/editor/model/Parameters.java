@@ -20,4 +20,6 @@ public class Parameters {
     public static final String FONT_TYPE = "Times New Roman";
     public static final int FONT_SIZE = 14;
 
+    public static final int CIRCLE_RADIUS = 10;
+
 }

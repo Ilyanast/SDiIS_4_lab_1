@@ -10,12 +10,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
-import static com.graph.editor.model.Parameters.FONT_SIZE;
-import static com.graph.editor.model.Parameters.FONT_TYPE;
+import static com.graph.editor.model.Parameters.*;
 
 public class Vertex implements Selectable {
 
-    private static final int CIRCLE_RADIUS = 10;
     private static final int CIRCLE_STROKE_WIDTH = 3;
 
     private final Group group;

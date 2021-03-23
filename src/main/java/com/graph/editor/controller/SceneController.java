@@ -32,8 +32,10 @@ public class SceneController {
         this.graph = graph;
         this.pane = pane;
 
+
         activeScene.setOnKeyPressed(this::handleSceneKeyEvents);
     }
+
 
     private void handleSceneKeyEvents(KeyEvent keyEvent) {
         switch (currentTool.getCurrentTool()) {
@@ -85,7 +87,10 @@ public class SceneController {
     }
 
     private void handleEscapeKeyEvent() {
-        edgeTargetVertices.clear();
+        if(edgeTargetVertices.isWaitForSecondClick()) {
+            pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());
+            edgeTargetVertices.clear();
+        }
     }
 
     private void setEdgeIdentifier(Edge edge, String identifier) {
@@ -114,7 +119,5 @@ public class SceneController {
         for (Edge connectedEdge : connectedEdges) {
             pane.getChildren().remove(connectedEdge.getGroup());
         }
-
     }
-
 }

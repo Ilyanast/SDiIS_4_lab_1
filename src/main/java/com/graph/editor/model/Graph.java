@@ -18,6 +18,10 @@ public class Graph {
         graphList = new ArrayList<>();
     }
 
+    public List<VertexAndAdjacentVertices> getGraphList() {
+        return graphList;
+    }
+
     public Vertex getVertexByGroup(Group group) {
         return graphList
                 .stream()
