@@ -1,7 +1,9 @@
 package com.graph.editor.view.shapes;
 
 import com.graph.editor.model.Selectable;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -107,8 +109,8 @@ public class Edge implements Selectable {
         line.setStroke(Color.BLACK);
     }
 
-    public void setOnMouseClicked(EventHandler<MouseEvent> mouseEvent) {
-        line.setOnMouseClicked(mouseEvent);
+    public void addEventHandler(EventType<MouseEvent> eventType, EventHandler<MouseEvent> eventHandler) {
+        line.addEventHandler(eventType, eventHandler);
     }
 
     public Vertex getSourceVertex() {

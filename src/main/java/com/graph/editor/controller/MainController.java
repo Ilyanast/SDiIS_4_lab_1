@@ -33,11 +33,12 @@ public class MainController {
 
     private  void createSceneController() {
         SceneController sceneController = new SceneController(mainSceneElements.getActiveScene(),
-                             mainSceneElements.getPane(), graph, currentTool, selectedElement, edgeTargetVertices);
+                              mainSceneElements.getPane(), graph, currentTool, selectedElement, edgeTargetVertices);
     }
 
     private void createMenuBarController() {
-        MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems());
+        MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems(), graph,
+                                                                                       mainSceneElements.getPane());
     }
 
     private void createToolBarController() {

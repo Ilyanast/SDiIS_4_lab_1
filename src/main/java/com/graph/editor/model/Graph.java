@@ -73,4 +73,9 @@ public class Graph {
         graphList
                 .removeIf(vertexAndAdjacentVertices -> vertexAndAdjacentVertices.getVertex() == vertex);
     }
+
+    public void clear() {
+        edgeList.clear();
+        graphList.clear();
+    }
 }

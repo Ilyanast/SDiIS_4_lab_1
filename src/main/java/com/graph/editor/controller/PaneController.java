@@ -3,6 +3,8 @@ package com.graph.editor.controller;
 import com.graph.editor.model.*;
 import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -94,9 +96,12 @@ public class PaneController {
             if(edgeTargetVertices.getSourceVertex() != vertex) {
                 edgeTargetVertices.setTargetVertex(vertex);
                 Edge edge = edgeTargetVertices.getEdge();
-                new EdgeController(currentTool, selectedElement, edge);
+                edge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(selectedElement, currentTool, edge));
                 putVerticesOverEdge(vertex);
                 graph.addEdge(edge);
+            }
+            else {
+                pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());
             }
             edgeTargetVertices.clear();
         }
