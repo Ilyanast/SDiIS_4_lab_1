@@ -25,10 +25,10 @@ public class MainController {
     }
 
     private void createAllModels() {
-        graph = new Graph();
-        currentTool = new CurrentTool();
         edgeTargetVertices = new EdgeTargetVertices();
         selectedElement = new SelectedElement();
+        currentTool = new CurrentTool();
+        graph = new Graph();
     }
 
     private  void createSceneController() {
@@ -37,8 +37,8 @@ public class MainController {
     }
 
     private void createMenuBarController() {
-        MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems(), graph,
-                                                                                       mainSceneElements.getPane());
+        MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems(),
+                                                                     mainSceneElements.getPane(), this);
     }
 
     private void createToolBarController() {
@@ -50,4 +50,19 @@ public class MainController {
                                                                                       currentTool, edgeTargetVertices);
     }
 
+    public SelectedElement getSelectedElement() {
+        return selectedElement;
+    }
+
+    public EdgeTargetVertices getEdgeTargetVertices() {
+        return edgeTargetVertices;
+    }
+
+    public CurrentTool getCurrentTool() {
+        return currentTool;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
 }

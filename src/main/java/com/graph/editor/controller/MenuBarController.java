@@ -12,14 +12,14 @@ import java.io.File;
 
 public class MenuBarController {
 
-    private final MenuItem[] menuBarItems;
-    private final Graph graph;
     private final Pane pane;
+    private final MenuItem[] menuBarItems;
+    private final MainController mainController;
 
-    public MenuBarController(MenuItem[] menuBarItems, Graph graph, Pane pane) {
-        this.menuBarItems = menuBarItems;
-        this.graph = graph;
+    public MenuBarController(MenuItem[] menuBarItems, Pane pane, MainController mainController) {
         this.pane = pane;
+        this.menuBarItems = menuBarItems;
+        this.mainController = mainController;
 
         openFileItemClickHandler();
         saveAsItemClickHandler();
@@ -28,7 +28,7 @@ public class MenuBarController {
     }
 
     private void openFileItemClickHandler(){
-        menuBarItems[0].setOnAction(actionEvent -> new LoadGraphFromFile(graph, pane));
+        menuBarItems[0].setOnAction(actionEvent -> new LoadGraphFromFile(mainController, pane));
     }
 
     private void saveAsItemClickHandler(){

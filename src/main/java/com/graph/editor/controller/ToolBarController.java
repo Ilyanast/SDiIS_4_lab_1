@@ -9,7 +9,7 @@ public class ToolBarController {
     //TODO Сделать графическое выделение текущего тула.
 
     private final ImageView[] toolBarElements;
-    private CurrentTool currentTool;
+    private final CurrentTool currentTool;
 
     public ToolBarController(ImageView[] toolBarElements, CurrentTool currentTool) {
         this.toolBarElements = toolBarElements;
