@@ -26,7 +26,7 @@ public class Edge implements Selectable {
     private final Vertex sourceVertex;
     private Vertex targetVertex;
 
-
+    private String identifier = " ";
 
     public Edge(Vertex sourceVertex, double endX, double endY) {
         this.sourceVertex = sourceVertex;
@@ -88,8 +88,13 @@ public class Edge implements Selectable {
 
     public void setIdentifier(String identifier) {
         if(!identifier.equals("")){
+            this.identifier = identifier;
             label.setText(identifier);
         }
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public void setTargetVertex(Vertex targetVertex) {

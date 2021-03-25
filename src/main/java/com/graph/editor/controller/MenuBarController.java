@@ -32,7 +32,7 @@ public class MenuBarController {
     }
 
     private void saveAsItemClickHandler(){
-        menuBarItems[1].setOnAction(actionEvent -> System.out.println("Item 2 click"));
+        menuBarItems[1].setOnAction(actionEvent -> new SaveGraphToFile(mainController));
     }
 
     private void graphTaskItemClickHandler(){

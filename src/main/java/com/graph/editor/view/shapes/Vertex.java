@@ -20,6 +20,8 @@ public class Vertex implements Selectable {
     private final Circle circle;
     private final Label label;
 
+    private String identifier = " ";
+
     private double x_pos;
     private double y_pos;
 
@@ -84,8 +86,13 @@ public class Vertex implements Selectable {
 
     public void setIdentifier(String identifier) {
         if(!identifier.equals("")){
+            this.identifier = identifier;
             label.setText(identifier);
         }
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public void makeActive() {

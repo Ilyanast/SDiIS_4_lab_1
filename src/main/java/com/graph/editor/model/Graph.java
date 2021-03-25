@@ -22,6 +22,10 @@ public class Graph {
         return graphList;
     }
 
+    public List<Edge> getEdgeList() {
+        return edgeList;
+    }
+
     public Vertex getVertexByGroup(Group group) {
         return graphList
                 .stream()
@@ -78,4 +82,14 @@ public class Graph {
         edgeList.clear();
         graphList.clear();
     }
+
+    public int getIndexOfVertex(Vertex vertex) {
+        for(int i = 0; i < graphList.size(); i++) {
+            if(graphList.get(i).getVertex() == vertex) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
 }
