@@ -1,9 +1,9 @@
 package com.graph.editor.controller;
 
+import com.graph.editor.model.MainModel;
 import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
-import com.graph.editor.model.Graph;
-import com.graph.editor.view.shapes.NotOrientedEdge;
+import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.input.MouseEvent;
 
@@ -11,16 +11,18 @@ public class VertexController {
 
     private final SelectedElement selectedElement;
     private final CurrentTool currentTool;
+
     private final Vertex vertex;
-    private final Graph graph;
+    private final MainModel mainModel;
 
    private double circleCenterOffsetX, circleCenterOffsetY;
 
-    public VertexController(CurrentTool currentTool, SelectedElement selectedElement, Graph graph, Vertex vertex) {
-        this.selectedElement = selectedElement;
-        this.currentTool = currentTool;
+    public VertexController(MainModel mainModel, Vertex vertex) {
+        this.mainModel = mainModel;
         this.vertex = vertex;
-        this.graph = graph;
+
+        currentTool = mainModel.getCurrentTool();
+        selectedElement = mainModel.getSelectedElement();
 
         vertex.setOnMousePressed(this::handleOnMousePressedEvent);
         vertex.setOnMouseDragged(this::handleOnMouseDraggedEvent);
@@ -42,8 +44,8 @@ public class VertexController {
     }
 
     private void updateConnectedEdges(Vertex vertex) {
-        graph.getListOfConnectedEdges(vertex)
-                .forEach(NotOrientedEdge::updateEdgePosition);
+        mainModel.getGraph().getListOfConnectedEdges(vertex)
+                .forEach(Edge::updateEdgePosition);
     }
 
     private void setCircleCenterOffset(double x_pos, double y_pos) {

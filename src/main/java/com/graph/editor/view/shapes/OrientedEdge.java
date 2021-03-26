@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 import static com.graph.editor.model.Parameters.ARROW_HEAD_SIZE;
+import static com.graph.editor.model.Parameters.CIRCLE_RADIUS;
 
 public class OrientedEdge extends Edge {
 
@@ -59,19 +60,26 @@ public class OrientedEdge extends Edge {
     }
 
     private void updateArrowHeadPosition(double endX, double endY) {
+
+        double rab = Math.sqrt(Math.pow(endX - sourceVertex.getCircleCenterX(), 2) + Math.pow(endY - sourceVertex.getCircleCenterY(), 2));
+        double k = CIRCLE_RADIUS/rab;
+
+        endX += (sourceVertex.getCircleCenterX() - endX) * k;
+        endY += (sourceVertex.getCircleCenterY() - endY) * k;
+
         double angle = Math.atan2((endY - sourceVertex.getCircleCenterY()),
                 (endX - sourceVertex.getCircleCenterX())) - Math.PI / 2.0;
         double sin = Math.sin(angle);
         double cos = Math.cos(angle);
 
-        double x1 = (- 1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * ARROW_HEAD_SIZE + endX;
-        double y1 = (- 1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * ARROW_HEAD_SIZE + endY;
+        double endX_1 = (- 1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * ARROW_HEAD_SIZE + endX;
+        double endY_1 = (- 1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * ARROW_HEAD_SIZE + endY;
 
         double x2 = (1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * ARROW_HEAD_SIZE + endX;
         double y2 = (1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * ARROW_HEAD_SIZE + endY;
 
-        updateLinePosition(firstArrowSide, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY(), x1, y1);
-        updateLinePosition(secondArrowSide, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY(), x2, y2);
+        updateLinePosition(firstArrowSide, endX, endY, endX_1, endY_1);
+        updateLinePosition(secondArrowSide, endX, endY, x2, y2);
     }
 
 }

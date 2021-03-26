@@ -23,6 +23,7 @@ public abstract class Edge implements Selectable {
     protected Vertex targetVertex;
 
     private String identifier = " ";
+    private EdgeType edgeType;
 
 
     public Edge(Vertex sourceVertex) {
@@ -46,6 +47,10 @@ public abstract class Edge implements Selectable {
         return identifier;
     }
 
+    public EdgeType getEdgeType() {
+        return edgeType;
+    }
+
     public void setIdentifier(String identifier) {
         if(!identifier.equals("")){
             this.identifier = identifier;
@@ -56,6 +61,10 @@ public abstract class Edge implements Selectable {
     public void setTargetVertex(Vertex targetVertex) {
         this.targetVertex = targetVertex;
         updateEdgePosition();
+    }
+
+    public void setEdgeType(EdgeType edgeType) {
+        this.edgeType = edgeType;
     }
 
     public void addEventHandler(EventType<MouseEvent> eventType, EventHandler<MouseEvent> eventHandler) {

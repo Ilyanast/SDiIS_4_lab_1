@@ -1,7 +1,8 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.view.shapes.NotOrientedEdge;
-import com.graph.editor.view.shapes.Vertex;
+import com.graph.editor.model.Graph;
+import com.graph.editor.model.MainModel;
+import com.graph.editor.view.shapes.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -12,19 +13,23 @@ import java.util.Scanner;
 
 public class LoadGraphFromFile {
 
-    private final MainController mainController;
+    private final MainModel mainModel;
     private final Pane pane;
 
-    public LoadGraphFromFile(MainController mainController, Pane pane) {
-        this.mainController = mainController;
+    private final Graph graph;
+
+    public LoadGraphFromFile(MainModel mainModel, Pane pane) {
+        this.mainModel = mainModel;
         this.pane = pane;
+
+        graph = mainModel.getGraph();
 
         handleLoadGraphFromFile(getChosenFile());
     }
 
     private void handleLoadGraphFromFile(File chosenFile) {
         pane.getChildren().clear();
-        mainController.getGraph().clear();
+        mainModel.getGraph().clear();
 
         addAllComponents(chosenFile);
     }
@@ -51,30 +56,7 @@ public class LoadGraphFromFile {
 
             scanner.close();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addAllArcs(int amountOfEdges, Scanner scanner) {
-        for (int i = 0; i < amountOfEdges; ++i) {
-            int sourceVertexNumber = scanner.nextInt();
-            int targetVertexNumber = scanner.nextInt();
-
-            String identifier = scanner.nextLine();
-
-            Vertex sourceVertex = mainController.getGraph().getGraphList().get(sourceVertexNumber).getVertex();
-            Vertex targetVertex = mainController.getGraph().getGraphList().get(targetVertexNumber).getVertex();
-
-            NotOrientedEdge notOrientedEdge = new NotOrientedEdge(sourceVertex, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY());
-            notOrientedEdge.setTargetVertex(targetVertex);
-            notOrientedEdge.setIdentifier(identifier);
-            notOrientedEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(mainController.getSelectedElement(),
-                                                                                mainController.getCurrentTool(), notOrientedEdge));
-
-            mainController.getGraph().addEdge(notOrientedEdge);
-            pane.getChildren().add(notOrientedEdge.getGroup());
-            putVerticesOverEdge(sourceVertex);
-            putVerticesOverEdge(targetVertex);
+            System.out.println("File was not selected");;
         }
     }
 
@@ -87,11 +69,50 @@ public class LoadGraphFromFile {
 
             Vertex vertex = new Vertex(x_pos, y_pos);
             vertex.setIdentifier(identifier);
-            new VertexController(mainController.getCurrentTool(), mainController.getSelectedElement(),
-                                                                                mainController.getGraph(), vertex);
-            mainController.getGraph().addVertexToGraph(vertex);
+            new VertexController(mainModel, vertex);
+            graph.addVertex(vertex);
             pane.getChildren().add(vertex.getGroup());
         }
+    }
+
+    private void addAllArcs(int amountOfEdges, Scanner scanner) {
+        for (int i = 0; i < amountOfEdges; ++i) {
+
+            EdgeType edgeType = EdgeType.values()[scanner.nextInt()];
+
+            Vertex sourceVertex = graph.getGraphList().get(scanner.nextInt()).getVertex();
+            Vertex targetVertex = graph.getGraphList().get(scanner.nextInt()).getVertex();
+
+            String identifier = scanner.nextLine();
+
+            Edge edge;
+
+            switch (edgeType) {
+                case NOT_ORIENTED_EDGE: {
+                    edge = new NotOrientedEdge(sourceVertex);
+                    addEdge(sourceVertex, targetVertex, identifier, edge, EdgeType.NOT_ORIENTED_EDGE);
+                    break;
+                }
+                case ORIENTED_EDGE: {
+                    edge = new OrientedEdge(sourceVertex);
+                    addEdge(sourceVertex, targetVertex, identifier, edge, EdgeType.ORIENTED_EDGE);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    private void addEdge(Vertex sourceVertex, Vertex targetVertex, String identifier, Edge edge, EdgeType edgeType) {
+        edge.setTargetVertex(targetVertex);
+        edge.setIdentifier(identifier);
+        edge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(mainModel, edge));
+
+        graph.addEdge(edge, edgeType);
+        pane.getChildren().add(edge.getGroup());
+
+        putVerticesOverEdge(sourceVertex);
+        putVerticesOverEdge(targetVertex);
     }
 
     private void putVerticesOverEdge(Vertex vertex) {

@@ -19,13 +19,12 @@ public class MainController {
     }
 
     private  void createSceneController() {
-        SceneController sceneController = new SceneController(mainSceneElements.getActiveScene(),
-                                                                            mainSceneElements.getPane(), mainModel);
+      //  SceneController sceneController = new SceneController(mainSceneElements.getActiveScene(),
+      //                                                                      mainSceneElements.getPane(), mainModel);
     }
 
     private void createMenuBarController() {
-        MenuBarController menuBarController = new MenuBarController(mainSceneElements.getMenuBarItems(),
-                                                                     mainSceneElements.getPane(), mainModel);
+        MenuBarController menuBarController = new MenuBarController(mainSceneElements, mainModel);
     }
 
     private void createToolBarController() {
@@ -33,6 +32,6 @@ public class MainController {
     }
 
     private void createPaneController() {
-        PaneController paneController = new PaneController(mainSceneElements.getPane(), mainModel);
+   //     PaneController paneController = new PaneController(mainSceneElements.getPane(), mainModel);
     }
 }

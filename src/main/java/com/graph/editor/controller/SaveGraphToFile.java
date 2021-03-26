@@ -1,6 +1,7 @@
 package com.graph.editor.controller;
 
 import com.graph.editor.model.Graph;
+import com.graph.editor.model.MainModel;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -9,10 +10,14 @@ import java.io.IOException;
 
 public class SaveGraphToFile {
 
-    private final MainController mainController;
+    private final MainModel mainModel;
 
-    public SaveGraphToFile(MainController mainController) {
-        this.mainController = mainController;
+    private final Graph graph;
+
+    public SaveGraphToFile(MainModel mainModel) {
+        this.mainModel = mainModel;
+
+        graph = mainModel.getGraph();
 
         handleSaveGraphToFile();
     }
@@ -30,15 +35,13 @@ public class SaveGraphToFile {
     }
 
     private void pushInfo(FileWriter fileWriter) throws IOException {
-        fileWriter.write(String.valueOf(mainController.getGraph().getGraphList().size()));
+        fileWriter.write(String.valueOf(graph.getGraphList().size()));
         fileWriter.append('\n');
-        fileWriter.write(String.valueOf(mainController.getGraph().getEdgeList().size()));
+        fileWriter.write(String.valueOf(graph.getEdgeList().size()));
         fileWriter.append('\n');
     }
 
     private void pushAllVertices(FileWriter fileWriter) throws IOException {
-        Graph graph = mainController.getGraph();
-
         int amountOfVertices = graph.getGraphList().size();
 
         for (int i = 0; i < amountOfVertices; ++i) {
@@ -52,12 +55,11 @@ public class SaveGraphToFile {
     }
 
     private void pushAllEdges(FileWriter fileWriter) throws IOException {
-
-        Graph graph = mainController.getGraph();
-
         int amountOfEdges = graph.getEdgeList().size();
 
         for (int i = 0; i < amountOfEdges; ++i) {
+            fileWriter.write(String.valueOf(graph.getEdgeList().get(i).getEdgeType().ordinal()));
+            fileWriter.append(' ');
             fileWriter.write(String.valueOf(graph.getIndexOfVertex(graph.getEdgeList().get(i).getSourceVertex())));
             fileWriter.append(' ');
             fileWriter.write(String.valueOf(graph.getIndexOfVertex(graph.getEdgeList().get(i).getTargetVertex())));
