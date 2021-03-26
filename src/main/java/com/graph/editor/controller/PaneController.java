@@ -1,15 +1,11 @@
 package com.graph.editor.controller;
 
 import com.graph.editor.model.*;
-import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.NotOrientedEdge;
 import com.graph.editor.view.shapes.Vertex;
-import javafx.event.Event;
-import javafx.event.EventType;
-import javafx.scene.Group;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 
 public class PaneController {
 
@@ -95,10 +91,10 @@ public class PaneController {
         if(edgeTargetVertices.isWaitForSecondClick()) {
             if(edgeTargetVertices.getSourceVertex() != vertex) {
                 edgeTargetVertices.setTargetVertex(vertex);
-                Edge edge = edgeTargetVertices.getEdge();
-                edge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(selectedElement, currentTool, edge));
+                NotOrientedEdge notOrientedEdge = edgeTargetVertices.getEdge();
+                notOrientedEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(selectedElement, currentTool, notOrientedEdge));
                 putVerticesOverEdge(vertex);
-                graph.addEdge(edge);
+                graph.addEdge(notOrientedEdge);
             }
             else {
                 pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());

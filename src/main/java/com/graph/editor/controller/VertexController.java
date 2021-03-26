@@ -3,7 +3,7 @@ package com.graph.editor.controller;
 import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.Graph;
-import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.NotOrientedEdge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.input.MouseEvent;
 
@@ -43,7 +43,7 @@ public class VertexController {
 
     private void updateConnectedEdges(Vertex vertex) {
         graph.getListOfConnectedEdges(vertex)
-                .forEach(Edge::updateEdgePosition);
+                .forEach(NotOrientedEdge::updateEdgePosition);
     }
 
     private void setCircleCenterOffset(double x_pos, double y_pos) {

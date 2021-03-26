@@ -1,6 +1,6 @@
 package com.graph.editor.model;
 
-import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.NotOrientedEdge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.Group;
 
@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 public class Graph {
 
     private final List<VertexAndAdjacentVertices> graphList;
-    private final List<Edge> edgeList;
+    private final List<NotOrientedEdge> notOrientedEdgeList;
 
     public Graph() {
-        edgeList = new ArrayList<>();
+        notOrientedEdgeList = new ArrayList<>();
         graphList = new ArrayList<>();
     }
 
@@ -22,8 +22,8 @@ public class Graph {
         return graphList;
     }
 
-    public List<Edge> getEdgeList() {
-        return edgeList;
+    public List<NotOrientedEdge> getEdgeList() {
+        return notOrientedEdgeList;
     }
 
     public Vertex getVertexByGroup(Group group) {
@@ -35,35 +35,35 @@ public class Graph {
                 .orElse(null);
     }
 
-    public List<Edge> getListOfConnectedEdges(Vertex vertex) {
-        return edgeList
+    public List<NotOrientedEdge> getListOfConnectedEdges(Vertex vertex) {
+        return notOrientedEdgeList
                 .stream()
-                .filter(edge -> edge.getSourceVertex() == vertex || edge.getTargetVertex() == vertex)
+                .filter(notOrientedEdge -> notOrientedEdge.getSourceVertex() == vertex || notOrientedEdge.getTargetVertex() == vertex)
                 .collect(Collectors.toList());
     }
 
-    public void addEdge(Edge edge) {
+    public void addEdge(NotOrientedEdge notOrientedEdge) {
         for (VertexAndAdjacentVertices vertexAndAdjacentVertices : graphList) {
-            if (vertexAndAdjacentVertices.getVertex() == edge.getSourceVertex()) {
-                vertexAndAdjacentVertices.getAdjacentVertices().add(edge.getTargetVertex());
+            if (vertexAndAdjacentVertices.getVertex() == notOrientedEdge.getSourceVertex()) {
+                vertexAndAdjacentVertices.getAdjacentVertices().add(notOrientedEdge.getTargetVertex());
             }
-            else if (vertexAndAdjacentVertices.getVertex() == edge.getTargetVertex()) {
-                vertexAndAdjacentVertices.getAdjacentVertices().add(edge.getSourceVertex());
+            else if (vertexAndAdjacentVertices.getVertex() == notOrientedEdge.getTargetVertex()) {
+                vertexAndAdjacentVertices.getAdjacentVertices().add(notOrientedEdge.getSourceVertex());
             }
         }
-        edgeList.add(edge);
+        notOrientedEdgeList.add(notOrientedEdge);
     }
 
-    public void removeEdge(Edge edge) {
+    public void removeEdge(NotOrientedEdge notOrientedEdge) {
         for(VertexAndAdjacentVertices vertexAndAdjacentVertices : graphList) {
-            if(vertexAndAdjacentVertices.getVertex() == edge.getSourceVertex()) {
-                vertexAndAdjacentVertices.getAdjacentVertices().remove(edge.getTargetVertex());
+            if(vertexAndAdjacentVertices.getVertex() == notOrientedEdge.getSourceVertex()) {
+                vertexAndAdjacentVertices.getAdjacentVertices().remove(notOrientedEdge.getTargetVertex());
             }
-            else if(vertexAndAdjacentVertices.getVertex() == edge.getTargetVertex()) {
-                vertexAndAdjacentVertices.getAdjacentVertices().remove(edge.getSourceVertex());
+            else if(vertexAndAdjacentVertices.getVertex() == notOrientedEdge.getTargetVertex()) {
+                vertexAndAdjacentVertices.getAdjacentVertices().remove(notOrientedEdge.getSourceVertex());
             }
         }
-        edgeList.remove(edge);
+        notOrientedEdgeList.remove(notOrientedEdge);
     }
 
     public void addVertexToGraph(Vertex vertex) {
@@ -79,7 +79,7 @@ public class Graph {
     }
 
     public void clear() {
-        edgeList.clear();
+        notOrientedEdgeList.clear();
         graphList.clear();
     }
 

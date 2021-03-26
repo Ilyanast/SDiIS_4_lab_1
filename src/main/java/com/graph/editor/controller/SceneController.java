@@ -5,7 +5,7 @@ import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.EdgeTargetVertices;
 import com.graph.editor.model.Graph;
 import com.graph.editor.view.TextInputDialogBuilder;
-import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.NotOrientedEdge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -71,8 +71,8 @@ public class SceneController {
         if (selectedElement.getSelectedElement() instanceof Vertex) {
             deleteVertex((Vertex) selectedElement.getSelectedElement());
         }
-        else if (selectedElement.getSelectedElement() instanceof Edge) {
-            deleteEdge((Edge) selectedElement.getSelectedElement());
+        else if (selectedElement.getSelectedElement() instanceof NotOrientedEdge) {
+            deleteEdge((NotOrientedEdge) selectedElement.getSelectedElement());
         }
     }
 
@@ -81,8 +81,8 @@ public class SceneController {
         if(selectedElement.getSelectedElement() instanceof Vertex) {
             setVertexIdentifier((Vertex) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
         }
-        else if(selectedElement.getSelectedElement() instanceof Edge) {
-            setEdgeIdentifier((Edge) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
+        else if(selectedElement.getSelectedElement() instanceof NotOrientedEdge) {
+            setEdgeIdentifier((NotOrientedEdge) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
         }
     }
 
@@ -93,8 +93,8 @@ public class SceneController {
         }
     }
 
-    private void setEdgeIdentifier(Edge edge, String identifier) {
-        edge.setIdentifier(identifier);
+    private void setEdgeIdentifier(NotOrientedEdge notOrientedEdge, String identifier) {
+        notOrientedEdge.setIdentifier(identifier);
     }
 
     private void setVertexIdentifier(Vertex vertex, String identifier) {
@@ -102,22 +102,22 @@ public class SceneController {
     }
 
     private void deleteVertex(Vertex vertex) {
-        List<Edge> connectedEdges = graph.getListOfConnectedEdges(vertex);
+        List<NotOrientedEdge> connectedNotOrientedEdges = graph.getListOfConnectedEdges(vertex);
         pane.getChildren().removeIf(elements -> elements.equals(vertex.getGroup()));
-        removeConnectedEdgesFromPane(connectedEdges);
+        removeConnectedEdgesFromPane(connectedNotOrientedEdges);
         graph.removeVertex(vertex);
         selectedElement.deselectElement();
     }
 
-    private void deleteEdge(Edge edge) {
-        pane.getChildren().removeIf(elements -> elements.equals(edge.getGroup()));
-        graph.removeEdge(edge);
+    private void deleteEdge(NotOrientedEdge notOrientedEdge) {
+        pane.getChildren().removeIf(elements -> elements.equals(notOrientedEdge.getGroup()));
+        graph.removeEdge(notOrientedEdge);
         selectedElement.deselectElement();
     }
 
-    private void removeConnectedEdgesFromPane(List<Edge> connectedEdges) {
-        for (Edge connectedEdge : connectedEdges) {
-            pane.getChildren().remove(connectedEdge.getGroup());
+    private void removeConnectedEdgesFromPane(List<NotOrientedEdge> connectedNotOrientedEdges) {
+        for (NotOrientedEdge connectedNotOrientedEdge : connectedNotOrientedEdges) {
+            pane.getChildren().remove(connectedNotOrientedEdge.getGroup());
         }
     }
 }

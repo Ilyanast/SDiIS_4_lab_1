@@ -1,7 +1,6 @@
 package com.graph.editor;
 
 import com.graph.editor.controller.MainController;
-import com.graph.editor.model.Graph;
 import com.graph.editor.view.MainView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

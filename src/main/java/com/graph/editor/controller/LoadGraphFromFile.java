@@ -1,6 +1,6 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.NotOrientedEdge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -65,14 +65,14 @@ public class LoadGraphFromFile {
             Vertex sourceVertex = mainController.getGraph().getGraphList().get(sourceVertexNumber).getVertex();
             Vertex targetVertex = mainController.getGraph().getGraphList().get(targetVertexNumber).getVertex();
 
-            Edge edge = new Edge(sourceVertex, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY());
-            edge.setTargetVertex(targetVertex);
-            edge.setIdentifier(identifier);
-            edge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(mainController.getSelectedElement(),
-                                                                                mainController.getCurrentTool(), edge));
+            NotOrientedEdge notOrientedEdge = new NotOrientedEdge(sourceVertex, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY());
+            notOrientedEdge.setTargetVertex(targetVertex);
+            notOrientedEdge.setIdentifier(identifier);
+            notOrientedEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(mainController.getSelectedElement(),
+                                                                                mainController.getCurrentTool(), notOrientedEdge));
 
-            mainController.getGraph().addEdge(edge);
-            pane.getChildren().add(edge.getGroup());
+            mainController.getGraph().addEdge(notOrientedEdge);
+            pane.getChildren().add(notOrientedEdge.getGroup());
             putVerticesOverEdge(sourceVertex);
             putVerticesOverEdge(targetVertex);
         }
