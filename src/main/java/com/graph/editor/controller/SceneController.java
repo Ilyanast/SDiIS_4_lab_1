@@ -2,7 +2,7 @@ package com.graph.editor.controller;
 
 import com.graph.editor.model.*;
 import com.graph.editor.view.TextInputDialogBuilder;
-import com.graph.editor.view.shapes.NotOrientedEdge;
+import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -13,78 +13,70 @@ import java.util.List;
 
 public class SceneController {
 
-    //TODO Сделать выбор инструмента по кнопке
-
     private final Pane pane;
     private final MainModel mainModel;
+
+    private final EdgeTargetVertices edgeTargetVertices;
+    private final SelectedElement selectedElement;
+    private final Graph graph;
+
 
     public SceneController(Scene activeScene, Pane pane, MainModel mainModel) {
         this.mainModel = mainModel;
         this.pane = pane;
 
+        edgeTargetVertices = mainModel.getEdgeTargetVertices();
+        selectedElement = mainModel.getSelectedElement();
+        graph = mainModel.getGraph();
 
-        activeScene.setOnKeyPressed(this::handleSceneKeyEvents);
+        activeScene.setOnKeyPressed(this::selectedElementKeyEvents);
     }
 
 
-    private void handleSceneKeyEvents(KeyEvent keyEvent) {
-        switch (currentTool.getCurrentTool()) {
-            case HAND_TOOL:
-                handleHandToolKeyEvents(keyEvent);
-                break;
-            case EDGE_TOOL:
-                handleEdgeToolKeyEvents(keyEvent);
-                break;
-        }
-    }
-
-    private void handleHandToolKeyEvents(KeyEvent keyEvent) {
+    private void selectedElementKeyEvents(KeyEvent keyEvent) {
         if(selectedElement.isElementSelected()){
             switch (keyEvent.getCode()) {
                 case DELETE:
-                    handleDeleteKeyEvent();
+                    deleteSelectedElement();
                     break;
                 case I:
-                    handleIKeyEvent();
+                    setIdentifierToSelectedElement();
                     break;
             }
         }
-    }
-
-    private void handleEdgeToolKeyEvents(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ESCAPE) {
-            handleEscapeKeyEvent();
+        if(keyEvent.getCode() == KeyCode.ESCAPE) {
+            clearEdgeTargetVertices();
         }
     }
 
-    private void handleDeleteKeyEvent() {
+    private void deleteSelectedElement() {
         if (selectedElement.getSelectedElement() instanceof Vertex) {
             deleteVertex((Vertex) selectedElement.getSelectedElement());
         }
-        else if (selectedElement.getSelectedElement() instanceof NotOrientedEdge) {
-            deleteEdge((NotOrientedEdge) selectedElement.getSelectedElement());
+        else if (selectedElement.getSelectedElement() instanceof Edge) {
+            deleteEdge((Edge) selectedElement.getSelectedElement());
         }
     }
 
-    private void handleIKeyEvent() {
+    private void setIdentifierToSelectedElement() {
         TextInputDialogBuilder textInputDialogBuilder = new TextInputDialogBuilder();
         if(selectedElement.getSelectedElement() instanceof Vertex) {
             setVertexIdentifier((Vertex) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
         }
-        else if(selectedElement.getSelectedElement() instanceof NotOrientedEdge) {
-            setEdgeIdentifier((NotOrientedEdge) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
+        else if(selectedElement.getSelectedElement() instanceof Edge) {
+            setEdgeIdentifier((Edge) selectedElement.getSelectedElement(), textInputDialogBuilder.getIdentifier());
         }
     }
 
-    private void handleEscapeKeyEvent() {
-        if(edgeTargetVertices.isWaitForSecondClick()) {
+    private void clearEdgeTargetVertices() {
+        if(edgeTargetVertices.isWaitForTargetVertex()) {
             pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());
             edgeTargetVertices.clear();
         }
     }
 
-    private void setEdgeIdentifier(NotOrientedEdge notOrientedEdge, String identifier) {
-        notOrientedEdge.setIdentifier(identifier);
+    private void setEdgeIdentifier(Edge edge, String identifier) {
+        edge.setIdentifier(identifier);
     }
 
     private void setVertexIdentifier(Vertex vertex, String identifier) {
@@ -92,22 +84,22 @@ public class SceneController {
     }
 
     private void deleteVertex(Vertex vertex) {
-        List<NotOrientedEdge> connectedNotOrientedEdges = graph.getListOfConnectedEdges(vertex);
+        List<Edge> connectedEdges = graph.getListOfConnectedEdges(vertex);
         pane.getChildren().removeIf(elements -> elements.equals(vertex.getGroup()));
-        removeConnectedEdgesFromPane(connectedNotOrientedEdges);
+        removeConnectedEdgesFromPane(connectedEdges);
         graph.removeVertex(vertex);
         selectedElement.deselectElement();
     }
 
-    private void deleteEdge(NotOrientedEdge notOrientedEdge) {
-        pane.getChildren().removeIf(elements -> elements.equals(notOrientedEdge.getGroup()));
-        graph.removeEdge(notOrientedEdge);
+    private void deleteEdge(Edge edge) {
+        pane.getChildren().removeIf(elements -> elements.equals(edge.getGroup()));
+        graph.removeEdge(edge);
         selectedElement.deselectElement();
     }
 
-    private void removeConnectedEdgesFromPane(List<NotOrientedEdge> connectedNotOrientedEdges) {
-        for (NotOrientedEdge connectedNotOrientedEdge : connectedNotOrientedEdges) {
-            pane.getChildren().remove(connectedNotOrientedEdge.getGroup());
+    private void removeConnectedEdgesFromPane(List<Edge> connectedEdges) {
+        for (Edge edge : connectedEdges) {
+            pane.getChildren().remove(edge.getGroup());
         }
     }
 }

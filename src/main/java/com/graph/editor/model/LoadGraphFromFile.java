@@ -1,7 +1,7 @@
-package com.graph.editor.controller;
+package com.graph.editor.model;
 
-import com.graph.editor.model.Graph;
-import com.graph.editor.model.MainModel;
+import com.graph.editor.controller.EdgeEventHandler;
+import com.graph.editor.controller.VertexController;
 import com.graph.editor.view.shapes.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -23,9 +23,13 @@ public class LoadGraphFromFile {
         this.pane = pane;
 
         graph = mainModel.getGraph();
+        File file = getChosenFile();
 
-        handleLoadGraphFromFile(getChosenFile());
+        if(file != null) {
+            handleLoadGraphFromFile(file);
+        }
     }
+
 
     private void handleLoadGraphFromFile(File chosenFile) {
         pane.getChildren().clear();
@@ -90,11 +94,13 @@ public class LoadGraphFromFile {
             switch (edgeType) {
                 case NOT_ORIENTED_EDGE: {
                     edge = new NotOrientedEdge(sourceVertex);
+                    edge.setEdgeType(edgeType);
                     addEdge(sourceVertex, targetVertex, identifier, edge, EdgeType.NOT_ORIENTED_EDGE);
                     break;
                 }
                 case ORIENTED_EDGE: {
                     edge = new OrientedEdge(sourceVertex);
+                    edge.setEdgeType(edgeType);
                     addEdge(sourceVertex, targetVertex, identifier, edge, EdgeType.ORIENTED_EDGE);
                     break;
                 }

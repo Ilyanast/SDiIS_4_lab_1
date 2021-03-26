@@ -1,4 +1,4 @@
-package com.graph.editor.controller;
+package com.graph.editor.model;
 
 public enum ToolType {
     HAND_TOOL,

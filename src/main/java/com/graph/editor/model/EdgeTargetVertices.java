@@ -14,10 +14,12 @@ public class EdgeTargetVertices {
         switch (edgeType) {
             case ORIENTED_EDGE: {
                 edge = new OrientedEdge(sourceVertex);
+                edge.setEdgeType(edgeType);
             }
             break;
             case NOT_ORIENTED_EDGE: {
                 edge = new NotOrientedEdge(sourceVertex);
+                edge.setEdgeType(edgeType);
                 break;
             }
         }

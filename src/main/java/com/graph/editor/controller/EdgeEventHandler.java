@@ -3,8 +3,8 @@ package com.graph.editor.controller;
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.MainModel;
 import com.graph.editor.model.SelectedElement;
+import com.graph.editor.model.ToolType;
 import com.graph.editor.view.shapes.Edge;
-import com.graph.editor.view.shapes.NotOrientedEdge;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 

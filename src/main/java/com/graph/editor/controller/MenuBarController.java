@@ -1,6 +1,8 @@
 package com.graph.editor.controller;
 
+import com.graph.editor.model.LoadGraphFromFile;
 import com.graph.editor.model.MainModel;
+import com.graph.editor.model.SaveGraphToFile;
 import com.graph.editor.view.InformationDialogBuilder;
 import com.graph.editor.view.MainSceneElements;
 import javafx.scene.control.MenuItem;
@@ -32,7 +34,8 @@ public class MenuBarController {
     }
 
     private void graphTaskHandler(){
-        menuBarItems[2].setOnAction(actionEvent -> System.out.println("Item 3 click"));
+        menuBarItems[2].setOnAction(actionEvent -> new GraphTaskController(mainSceneElements.getPane(),
+                mainModel.getGraph(), mainModel.getSelectedElement()).startGraphTask());
     }
 
     private void aboutHandler() {

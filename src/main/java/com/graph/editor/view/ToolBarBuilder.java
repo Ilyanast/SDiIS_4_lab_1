@@ -25,8 +25,6 @@ public class ToolBarBuilder {
         imageView.setFitWidth(Parameters.TOOLBAR_WIDTH);
     }
 
-    //TODO close inputStream
-
     private Image getImageFromFile(int menuNumber) {
         try {
             return new Image(new FileInputStream(Parameters.ICON_LOCATION + menuNumber + Parameters.ICON_EXPANSION));

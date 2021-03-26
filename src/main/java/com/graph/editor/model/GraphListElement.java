@@ -5,12 +5,12 @@ import com.graph.editor.view.shapes.Vertex;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VertexAndAdjacentVertices {
+public class GraphListElement {
 
     private final Vertex vertex;
     private final List<Vertex> adjacentVertices;
 
-    public VertexAndAdjacentVertices(Vertex vertex) {
+    public GraphListElement(Vertex vertex) {
         adjacentVertices = new ArrayList<Vertex>();
         this.vertex = vertex;
     }

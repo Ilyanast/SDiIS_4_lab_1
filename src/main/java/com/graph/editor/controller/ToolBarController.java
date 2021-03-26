@@ -2,10 +2,11 @@ package com.graph.editor.controller;
 
 import com.graph.editor.model.CurrentTool;
 import com.graph.editor.model.MainModel;
-import javafx.event.EventHandler;
+import com.graph.editor.model.ToolType;
+import com.graph.editor.view.shapes.Edge;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 
@@ -16,10 +17,12 @@ public class ToolBarController {
 
     private final CurrentTool currentTool;
     private final DropShadow shadowEffect;
+    private final Pane pane;
 
-    public ToolBarController(ImageView[] toolBarElements, MainModel mainModel) {
+    public ToolBarController(ImageView[] toolBarElements, Pane pane, MainModel mainModel) {
         this.toolBarElements = toolBarElements;
         this.mainModel = mainModel;
+        this.pane = pane;
 
         currentTool = mainModel.getCurrentTool();
         shadowEffect = new DropShadow(10, Color.DARKRED);
@@ -33,6 +36,7 @@ public class ToolBarController {
     private void vertexToolHandler(){
         toolBarElements[0].setOnMouseClicked(mouseEvent -> {
             currentTool.setCurrentTool(ToolType.HAND_TOOL);
+            removeEdgeFromPane(mainModel.getEdgeTargetVertices().getEdge());
             mainModel.getEdgeTargetVertices().clear();
             clearEffectFromTools();
             toolBarElements[0].setEffect(shadowEffect);
@@ -42,6 +46,7 @@ public class ToolBarController {
     private void notOrientedEdgeToolHandler(){
         toolBarElements[1].setOnMouseClicked(mouseEvent -> {
             currentTool.setCurrentTool(ToolType.EDGE_TOOL);
+            removeEdgeFromPane(mainModel.getEdgeTargetVertices().getEdge());
             mainModel.getEdgeTargetVertices().clear();
             clearEffectFromTools();
             toolBarElements[1].setEffect(shadowEffect);
@@ -52,10 +57,17 @@ public class ToolBarController {
     private void orientedEdgeToolHandler(){
         toolBarElements[2].setOnMouseClicked(mouseEvent -> {
             currentTool.setCurrentTool(ToolType.ORIENTED_EDGE_TOOL);
+            removeEdgeFromPane(mainModel.getEdgeTargetVertices().getEdge());
             mainModel.getEdgeTargetVertices().clear();
             clearEffectFromTools();
             toolBarElements[2].setEffect(shadowEffect);
         });
+    }
+
+    private void removeEdgeFromPane(Edge edge) {
+        if(edge != null) {
+            pane.getChildren().remove(edge.getGroup());
+        }
     }
 
     private void clearEffectFromTools() {

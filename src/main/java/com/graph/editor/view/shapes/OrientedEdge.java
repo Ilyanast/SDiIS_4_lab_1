@@ -3,8 +3,7 @@ package com.graph.editor.view.shapes;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-import static com.graph.editor.model.Parameters.ARROW_HEAD_SIZE;
-import static com.graph.editor.model.Parameters.CIRCLE_RADIUS;
+import static com.graph.editor.model.Parameters.*;
 
 public class OrientedEdge extends Edge {
 
@@ -16,8 +15,8 @@ public class OrientedEdge extends Edge {
         super(sourceVertex);
 
         createArrowSides();
-        setLineParams(firstArrowSide);
-        setLineParams(secondArrowSide);
+        setLineParams(firstArrowSide, ARROW_SIDE_LINE_WIDTH);
+        setLineParams(secondArrowSide, ARROW_SIDE_LINE_WIDTH);
 
         addArrowHeadToGroup(firstArrowSide, secondArrowSide);
     }
@@ -25,13 +24,15 @@ public class OrientedEdge extends Edge {
 
     public void setTargetPosition(double endX, double endY) {
         updateLinePosition(line, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY(), endX, endY);
+
         updateArrowHeadPosition(endX, endY);
     }
 
     public void updateEdgePosition() {
         if(targetVertex != null) {
             updateLabelPosition();
-            updateArrowHeadPosition(targetVertex.getCircleCenterX(), targetVertex.getCircleCenterY());
+            updateArrowHeadPosition(getVertexStrokeX(targetVertex.getCircleCenterX(), targetVertex.getCircleCenterY()),
+                    getVertexStrokeY(targetVertex.getCircleCenterX(), targetVertex.getCircleCenterY()));
             updateLinePosition(line, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY(),
                     targetVertex.getCircleCenterX(), targetVertex.getCircleCenterY());
         }
@@ -61,12 +62,6 @@ public class OrientedEdge extends Edge {
 
     private void updateArrowHeadPosition(double endX, double endY) {
 
-        double rab = Math.sqrt(Math.pow(endX - sourceVertex.getCircleCenterX(), 2) + Math.pow(endY - sourceVertex.getCircleCenterY(), 2));
-        double k = CIRCLE_RADIUS/rab;
-
-        endX += (sourceVertex.getCircleCenterX() - endX) * k;
-        endY += (sourceVertex.getCircleCenterY() - endY) * k;
-
         double angle = Math.atan2((endY - sourceVertex.getCircleCenterY()),
                 (endX - sourceVertex.getCircleCenterX())) - Math.PI / 2.0;
         double sin = Math.sin(angle);
@@ -81,5 +76,21 @@ public class OrientedEdge extends Edge {
         updateLinePosition(firstArrowSide, endX, endY, endX_1, endY_1);
         updateLinePosition(secondArrowSide, endX, endY, x2, y2);
     }
+
+    private double getVertexStrokeX(double endX, double endY) {
+        double rab = Math.sqrt(Math.pow(endX - sourceVertex.getCircleCenterX(), 2) + Math.pow(endY - sourceVertex.getCircleCenterY(), 2));
+        double k = CIRCLE_RADIUS/rab;
+
+        return (endX += (sourceVertex.getCircleCenterX() - endX) * k);
+
+    }
+
+    private double getVertexStrokeY(double endX, double endY) {
+        double rab = Math.sqrt(Math.pow(endX - sourceVertex.getCircleCenterX(), 2) + Math.pow(endY - sourceVertex.getCircleCenterY(), 2));
+        double k = CIRCLE_RADIUS/rab;
+
+        return (endY += (sourceVertex.getCircleCenterY() - endY) * k);
+    }
+
 
 }

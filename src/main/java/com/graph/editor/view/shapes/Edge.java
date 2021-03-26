@@ -32,7 +32,7 @@ public abstract class Edge implements Selectable {
         createBasicElements();
 
         setLabelParams();
-        setLineParams(line);
+        setLineParams(line, MAIN_LINE_WIDTH);
 
         updateLinePosition(line, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY(),
                 sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY());
@@ -89,10 +89,10 @@ public abstract class Edge implements Selectable {
     public abstract void makeActive();
 
 
-    protected void setLineParams(Line line) {
+    protected void setLineParams(Line line, int lineWidth) {
         line.setCursor(Cursor.HAND);
         line.setStroke(Color.BLACK);
-        line.setStrokeWidth(LINE_WIDTH);
+        line.setStrokeWidth(lineWidth);
     }
 
     protected void updateLinePosition(Line line, double startX, double startY, double endX, double endY) {

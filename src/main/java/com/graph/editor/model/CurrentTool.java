@@ -1,7 +1,5 @@
 package com.graph.editor.model;
 
-import com.graph.editor.controller.ToolType;
-
 public class CurrentTool {
 
     private ToolType currentToolType;

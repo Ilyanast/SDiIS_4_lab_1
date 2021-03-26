@@ -3,9 +3,13 @@ package com.graph.editor.controller;
 import com.graph.editor.model.MainModel;
 import com.graph.editor.model.SelectedElement;
 import com.graph.editor.model.CurrentTool;
+import com.graph.editor.model.ToolType;
 import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.input.MouseEvent;
+
+import static com.graph.editor.model.Parameters.PANE_SIZE_X;
+import static com.graph.editor.model.Parameters.PANE_SIZE_Y;
 
 public class VertexController {
 
@@ -38,7 +42,21 @@ public class VertexController {
 
     private void handleOnMouseDraggedEvent(MouseEvent mouseEvent) {
         if (currentTool.getCurrentTool() == ToolType.HAND_TOOL) {
-            vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX,mouseEvent.getY() - circleCenterOffsetY);
+            if(mouseEvent.getX() < 0) {
+                vertex.setVertexPosition(0,mouseEvent.getY() - circleCenterOffsetY);
+            }
+            else if(mouseEvent.getX() > (PANE_SIZE_X - 10)) {
+                vertex.setVertexPosition(PANE_SIZE_X,mouseEvent.getY() - circleCenterOffsetY);
+            }
+            else if(mouseEvent.getY() < 0) {
+                vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX,0);
+            }
+            else if(mouseEvent.getY() > PANE_SIZE_Y - 10) {
+                vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX, PANE_SIZE_Y);
+            }
+            else {
+                vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX,mouseEvent.getY()- circleCenterOffsetY);
+            }
             updateConnectedEdges(vertex);
         }
     }

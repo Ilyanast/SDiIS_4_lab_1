@@ -1,7 +1,8 @@
 package com.graph.editor.controller;
 
 import com.graph.editor.model.*;
-import com.graph.editor.view.shapes.NotOrientedEdge;
+import com.graph.editor.view.shapes.Edge;
+import com.graph.editor.view.shapes.EdgeType;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -12,38 +13,51 @@ public class PaneController {
     private final Pane pane;
     private final MainModel mainModel;
 
+    private final Graph graph;
+    private final CurrentTool currentTool;
+    private final SelectedElement selectedElement;
+    private final EdgeTargetVertices edgeTargetVertices;
+
     public PaneController(Pane pane, MainModel mainModel) {
         this.mainModel = mainModel;
         this.pane = pane;
+
+        graph = mainModel.getGraph();
+        currentTool = mainModel.getCurrentTool();
+        selectedElement = mainModel.getSelectedElement();
+        edgeTargetVertices = mainModel.getEdgeTargetVertices();
 
         pane.setOnMouseMoved(this::handleMouseMove);
         pane.setOnMouseClicked(this::handleMouseClick);
     }
 
     private void handleMouseMove(MouseEvent mouseEvent) {
-        if(edgeTargetVertices.isWaitForSecondClick()) {
-            edgeTargetVertices.setLineEndPosition(mouseEvent.getX(), mouseEvent.getY());
+        if(edgeTargetVertices.isWaitForTargetVertex()) {
+            edgeTargetVertices.setEndLinePosition(mouseEvent.getX(), mouseEvent.getY());
         }
     }
 
     private void handleMouseClick(MouseEvent mouseEvent) {
         if(mouseEvent.getButton() == MouseButton.PRIMARY) {
-            if(mouseEvent.getClickCount() == 1 && mouseEvent.getTarget().equals(pane)) {
-                selectedElement.deselectElement();
-            }
             switch (currentTool.getCurrentTool()) {
-                case HAND_TOOL:
-                    handleVertexToolMouseEvents(mouseEvent);
+                case HAND_TOOL: {
+                    handToolMouseEvents(mouseEvent);
                     break;
-                case EDGE_TOOL:
-                    handleEdgeToolMouseEvents(mouseEvent);
+                }
+                case EDGE_TOOL: {
+                    edgeToolMouseEvents(mouseEvent);
                     break;
+                }
+                case ORIENTED_EDGE_TOOL: {
+                    orientedEdgeToolMouseEvents(mouseEvent);
+                    break;
+                }
             }
         }
 
     }
 
-    private void handleVertexToolMouseEvents(MouseEvent mouseEvent) {
+    private void handToolMouseEvents(MouseEvent mouseEvent) {
         if(mouseEvent.getTarget().equals(pane)) {
             switch (mouseEvent.getClickCount()) {
                 case 1:
@@ -56,37 +70,43 @@ public class PaneController {
         }
     }
 
+    private void handleDoubleClickEvent(MouseEvent mouseEvent) {
+        Vertex vertex = new Vertex(mouseEvent.getX(), mouseEvent.getY());
+        new VertexController(mainModel, vertex);
+        pane.getChildren().add(vertex.getGroup());
+        graph.addVertex(vertex);
+    }
+
     private Vertex getTargetVertex(MouseEvent mouseEvent) {
         return graph.getGraphList()
             .stream()
-            .map(VertexAndAdjacentVertices::getVertex)
+            .map(GraphListElement::getVertex)
             .filter(vertex -> Math.abs(mouseEvent.getX() - vertex.getCircleCenterX()) <= Parameters.CIRCLE_RADIUS &&
                     Math.abs(mouseEvent.getY() - vertex.getCircleCenterY()) <= Parameters.CIRCLE_RADIUS)
             .findFirst()
             .orElse(null);
     }
 
-    private void handleEdgeToolMouseEvents(MouseEvent mouseEvent) {
+    private void edgeToolMouseEvents(MouseEvent mouseEvent) {
         if(getTargetVertex(mouseEvent) != null) {
-            handleEdgeCreator(getTargetVertex(mouseEvent));
+            createEdge(getTargetVertex(mouseEvent), EdgeType.NOT_ORIENTED_EDGE);
         }
     }
 
-    private void handleDoubleClickEvent(MouseEvent mouseEvent) {
-        Vertex vertex = new Vertex(mouseEvent.getX(), mouseEvent.getY());
-        new VertexController(currentTool, selectedElement, graph, vertex);
-        pane.getChildren().add(vertex.getGroup());
-        graph.addVertexToGraph(vertex);
+    private void orientedEdgeToolMouseEvents(MouseEvent mouseEvent) {
+        if(getTargetVertex(mouseEvent) != null) {
+            createEdge(getTargetVertex(mouseEvent), EdgeType.ORIENTED_EDGE);
+        }
     }
 
-    private void handleEdgeCreator(Vertex vertex) {
-        if(edgeTargetVertices.isWaitForSecondClick()) {
+    private void createEdge(Vertex vertex, EdgeType edgeType) {
+        if(edgeTargetVertices.isWaitForTargetVertex()) {
             if(edgeTargetVertices.getSourceVertex() != vertex) {
                 edgeTargetVertices.setTargetVertex(vertex);
-                NotOrientedEdge notOrientedEdge = edgeTargetVertices.getEdge();
-                notOrientedEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(selectedElement, currentTool, notOrientedEdge));
+                Edge edge = edgeTargetVertices.getEdge();
+                edge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(mainModel, edge));
+                graph.addEdge(edge, edgeType);
                 putVerticesOverEdge(vertex);
-                graph.addEdge(notOrientedEdge);
             }
             else {
                 pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());
@@ -94,7 +114,7 @@ public class PaneController {
             edgeTargetVertices.clear();
         }
         else {
-            edgeTargetVertices.setSourceVertex(vertex);
+            edgeTargetVertices.setSourceVertex(vertex, edgeType);
             pane.getChildren().add(edgeTargetVertices.getEdge().getGroup());
             putVerticesOverEdge(vertex);
         }

@@ -1,4 +1,4 @@
-package com.graph.editor.controller;
+package com.graph.editor.model;
 
 import com.graph.editor.model.Graph;
 import com.graph.editor.model.MainModel;
@@ -18,13 +18,16 @@ public class SaveGraphToFile {
         this.mainModel = mainModel;
 
         graph = mainModel.getGraph();
+        File file = getChosenFile();
 
-        handleSaveGraphToFile();
+        if(file != null) {
+            handleSaveGraphToFile(file);
+        }
     }
 
-    private void handleSaveGraphToFile() {
+    private void handleSaveGraphToFile(File file) {
         try {
-            FileWriter fileWriter = new FileWriter(getChosenFile());
+            FileWriter fileWriter = new FileWriter(file);
             pushInfo(fileWriter);
             pushAllVertices(fileWriter);
             pushAllEdges(fileWriter);
