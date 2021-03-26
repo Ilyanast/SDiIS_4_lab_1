@@ -1,6 +1,7 @@
 package com.graph.editor.controller;
 
 import com.graph.editor.model.CurrentTool;
+import com.graph.editor.model.MainModel;
 import javafx.scene.image.ImageView;
 
 
@@ -9,11 +10,11 @@ public class ToolBarController {
     //TODO Сделать графическое выделение текущего тула.
 
     private final ImageView[] toolBarElements;
-    private final CurrentTool currentTool;
+    private final MainModel mainModel;
 
-    public ToolBarController(ImageView[] toolBarElements, CurrentTool currentTool) {
+    public ToolBarController(ImageView[] toolBarElements, MainModel mainModel) {
         this.toolBarElements = toolBarElements;
-        this.currentTool = currentTool;
+        this.mainModel = mainModel;
         vertexToolClickHandler();
         edgeToolClickHandler();
         orientedEdgeToolClickHandler();

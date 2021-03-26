@@ -1,9 +1,6 @@
 package com.graph.editor.controller;
 
-import com.graph.editor.model.SelectedElement;
-import com.graph.editor.model.CurrentTool;
-import com.graph.editor.model.EdgeTargetVertices;
-import com.graph.editor.model.Graph;
+import com.graph.editor.model.*;
 import com.graph.editor.view.TextInputDialogBuilder;
 import com.graph.editor.view.shapes.NotOrientedEdge;
 import com.graph.editor.view.shapes.Vertex;
@@ -19,17 +16,10 @@ public class SceneController {
     //TODO Сделать выбор инструмента по кнопке
 
     private final Pane pane;
-    private final Graph graph;
-    private final CurrentTool currentTool;
-    private final EdgeTargetVertices edgeTargetVertices;
-    private final SelectedElement selectedElement;
+    private final MainModel mainModel;
 
-    public SceneController(Scene activeScene, Pane pane, Graph graph, CurrentTool currentTool,
-                           SelectedElement selectedElement, EdgeTargetVertices edgeTargetVertices) {
-        this.selectedElement = selectedElement;
-        this.edgeTargetVertices = edgeTargetVertices;
-        this.currentTool = currentTool;
-        this.graph = graph;
+    public SceneController(Scene activeScene, Pane pane, MainModel mainModel) {
+        this.mainModel = mainModel;
         this.pane = pane;
 
 

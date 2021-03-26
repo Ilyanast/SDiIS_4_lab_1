@@ -1,41 +1,52 @@
 package com.graph.editor.model;
 
-import com.graph.editor.view.shapes.NotOrientedEdge;
-import com.graph.editor.view.shapes.Vertex;
+import com.graph.editor.view.shapes.*;
 
 public class EdgeTargetVertices {
 
     private Vertex sourceVertex;
-    private NotOrientedEdge notOrientedEdge;
+    private Edge edge;
+
+
+    public void setSourceVertex(Vertex sourceVertex, EdgeType edgeType) {
+        this.sourceVertex = sourceVertex;
+
+        switch (edgeType) {
+            case ORIENTED_EDGE: {
+                edge = new OrientedEdge(sourceVertex);
+            }
+            break;
+            case NOT_ORIENTED_EDGE: {
+                edge = new NotOrientedEdge(sourceVertex);
+                break;
+            }
+        }
+
+    }
+
+    public void setTargetVertex(Vertex targetVertex) {
+        edge.setTargetVertex(targetVertex);
+    }
+
+    public void setEndLinePosition(double endX, double endY) {
+        edge.setTargetPosition(endX, endY);
+    }
+
+    public boolean isWaitForTargetVertex() {
+        return sourceVertex != null;
+    }
 
     public Vertex getSourceVertex() {
         return sourceVertex;
     }
 
-    public void setSourceVertex(Vertex sourceVertex) {
-        this.sourceVertex = sourceVertex;
-        this.notOrientedEdge = new NotOrientedEdge(sourceVertex, sourceVertex.getCircleCenterX(), sourceVertex.getCircleCenterY());
-    }
-
-    public void setTargetVertex(Vertex targetVertex) {
-        notOrientedEdge.setTargetVertex(targetVertex);
-    }
-
-    public boolean isWaitForSecondClick() {
-        return sourceVertex != null;
-    }
-
-    public NotOrientedEdge getEdge() {
-        return notOrientedEdge;
+    public Edge getEdge() {
+        return edge;
     }
 
     public void clear() {
         sourceVertex = null;
-        notOrientedEdge = null;
-    }
-
-    public void setLineEndPosition(double endX, double endY) {
-        notOrientedEdge.setTargetPosition(endX, endY);
+        edge = null;
     }
 
 }

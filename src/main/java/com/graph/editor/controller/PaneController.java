@@ -9,19 +9,11 @@ import javafx.scene.layout.Pane;
 
 public class PaneController {
 
-    private final Graph graph;
     private final Pane pane;
+    private final MainModel mainModel;
 
-    private final SelectedElement selectedElement;
-    private final EdgeTargetVertices edgeTargetVertices;
-    private final CurrentTool currentTool;
-
-    public PaneController(Pane pane, Graph graph, SelectedElement selectedElement, CurrentTool currentTool,
-                          EdgeTargetVertices edgeTargetVertices) {
-        this.selectedElement = selectedElement;
-        this.edgeTargetVertices = edgeTargetVertices;
-        this.currentTool = currentTool;
-        this.graph = graph;
+    public PaneController(Pane pane, MainModel mainModel) {
+        this.mainModel = mainModel;
         this.pane = pane;
 
         pane.setOnMouseMoved(this::handleMouseMove);

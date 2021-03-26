@@ -1,6 +1,7 @@
 package com.graph.editor.controller;
 
 import com.graph.editor.model.Graph;
+import com.graph.editor.model.MainModel;
 import com.graph.editor.view.InformationDialogBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,13 +14,13 @@ import java.io.File;
 public class MenuBarController {
 
     private final Pane pane;
+    private final MainModel mainModel;
     private final MenuItem[] menuBarItems;
-    private final MainController mainController;
 
-    public MenuBarController(MenuItem[] menuBarItems, Pane pane, MainController mainController) {
-        this.pane = pane;
+    public MenuBarController(MenuItem[] menuBarItems, Pane pane, MainModel mainModel) {
         this.menuBarItems = menuBarItems;
-        this.mainController = mainController;
+        this.mainModel = mainModel;
+        this.pane = pane;
 
         openFileItemClickHandler();
         saveAsItemClickHandler();
