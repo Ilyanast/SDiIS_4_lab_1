@@ -8,8 +8,7 @@ import com.graph.editor.view.shapes.Edge;
 import com.graph.editor.view.shapes.Vertex;
 import javafx.scene.input.MouseEvent;
 
-import static com.graph.editor.model.Parameters.PANE_SIZE_X;
-import static com.graph.editor.model.Parameters.PANE_SIZE_Y;
+import static com.graph.editor.model.Parameters.*;
 
 public class VertexController {
 
@@ -19,7 +18,7 @@ public class VertexController {
     private final Vertex vertex;
     private final MainModel mainModel;
 
-   private double circleCenterOffsetX, circleCenterOffsetY;
+    private double circleCenterOffsetX, circleCenterOffsetY;
 
     public VertexController(MainModel mainModel, Vertex vertex) {
         this.mainModel = mainModel;
@@ -42,21 +41,23 @@ public class VertexController {
 
     private void handleOnMouseDraggedEvent(MouseEvent mouseEvent) {
         if (currentTool.getCurrentTool() == ToolType.HAND_TOOL) {
-            if(mouseEvent.getX() < 0) {
-                vertex.setVertexPosition(0,mouseEvent.getY() - circleCenterOffsetY);
+            double posX = mouseEvent.getX();
+            double posY = mouseEvent.getY();
+            double circleCornerX = posX  - CIRCLE_RADIUS - circleCenterOffsetX;
+            double circleCornerY = posY  - CIRCLE_RADIUS - circleCenterOffsetY;
+            if(circleCornerX < 0) {
+                posX = circleCenterOffsetX + CIRCLE_RADIUS + CIRCLE_STROKE_WIDTH / 2.;
             }
-            else if(mouseEvent.getX() > (PANE_SIZE_X - 10)) {
-                vertex.setVertexPosition(PANE_SIZE_X,mouseEvent.getY() - circleCenterOffsetY);
+            if(circleCornerX > PANE_SIZE_X - (CIRCLE_RADIUS * 2)) {
+                posX = PANE_SIZE_X - CIRCLE_RADIUS + circleCenterOffsetX - CIRCLE_STROKE_WIDTH / 2.;
             }
-            else if(mouseEvent.getY() < 0) {
-                vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX,0);
+            if(circleCornerY < 0) {
+                posY = circleCenterOffsetY + CIRCLE_RADIUS + CIRCLE_STROKE_WIDTH / 2.;
             }
-            else if(mouseEvent.getY() > PANE_SIZE_Y - 10) {
-                vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX, PANE_SIZE_Y);
+            if(circleCornerY > PANE_SIZE_Y - (CIRCLE_RADIUS * 2)) {
+                posY = PANE_SIZE_Y - CIRCLE_RADIUS + circleCenterOffsetY - CIRCLE_STROKE_WIDTH / 2.;
             }
-            else {
-                vertex.setVertexPosition(mouseEvent.getX() - circleCenterOffsetX,mouseEvent.getY()- circleCenterOffsetY);
-            }
+            vertex.setVertexPosition(posX - circleCenterOffsetX,posY- circleCenterOffsetY);
             updateConnectedEdges(vertex);
         }
     }

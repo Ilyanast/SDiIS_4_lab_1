@@ -105,8 +105,13 @@ public class PaneController {
                 edgeTargetVertices.setTargetVertex(vertex);
                 Edge edge = edgeTargetVertices.getEdge();
                 edge.addEventHandler(MouseEvent.MOUSE_CLICKED, new EdgeEventHandler(mainModel, edge));
-                graph.addEdge(edge, edgeType);
-                putVerticesOverEdge(vertex);
+
+                if(!graph.addEdge(edge, edgeType)) {
+                    pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());
+                    edgeTargetVertices.clear();
+                }
+
+                putVertexOverEdge(vertex);
             }
             else {
                 pane.getChildren().remove(edgeTargetVertices.getEdge().getGroup());
@@ -116,11 +121,11 @@ public class PaneController {
         else {
             edgeTargetVertices.setSourceVertex(vertex, edgeType);
             pane.getChildren().add(edgeTargetVertices.getEdge().getGroup());
-            putVerticesOverEdge(vertex);
+            putVertexOverEdge(vertex);
         }
     }
 
-    private void putVerticesOverEdge(Vertex vertex) {
+    private void putVertexOverEdge(Vertex vertex) {
         pane.getChildren().remove(vertex.getGroup());
         pane.getChildren().addAll(vertex.getGroup());
     }

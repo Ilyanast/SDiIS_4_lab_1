@@ -21,6 +21,7 @@ public class Parameters {
     public static final int FONT_SIZE = 14;
 
     public static final int CIRCLE_RADIUS = 10;
+    public static final int CIRCLE_STROKE_WIDTH = 3;
 
     public static final int MAIN_LINE_WIDTH = 4;
     public static final int ARROW_SIDE_LINE_WIDTH = 4;

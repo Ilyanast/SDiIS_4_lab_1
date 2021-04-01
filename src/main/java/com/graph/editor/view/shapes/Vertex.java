@@ -14,8 +14,6 @@ import static com.graph.editor.model.Parameters.*;
 
 public class Vertex implements Selectable {
 
-    private static final int CIRCLE_STROKE_WIDTH = 3;
-
     private final Group group;
     private final Circle circle;
     private final Label label;

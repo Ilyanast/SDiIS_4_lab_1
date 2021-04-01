@@ -57,7 +57,7 @@ public class Graph {
     }
 
     public void removeEdge(Edge edge) {
-        if(isEdgeExist(edge)) {
+        if(isEdgeExist(edge, edge.getEdgeType())) {
             switch (edge.getEdgeType()) {
                 case ORIENTED_EDGE: {
                     removeOrientedEdge(edge);
@@ -72,8 +72,8 @@ public class Graph {
         }
     }
 
-    public void addEdge(Edge edge, EdgeType edgeType) {
-        if(!isEdgeExist(edge)) {
+    public boolean addEdge(Edge edge, EdgeType edgeType) {
+        if(!isEdgeExist(edge, edgeType)) {
             switch (edgeType) {
                 case ORIENTED_EDGE: {
                     addOrientedEdge(edge);
@@ -85,7 +85,9 @@ public class Graph {
                 }
             }
             edgeList.add(edge);
+            return true;
         }
+        return false;
     }
 
     public void clear() {
@@ -134,11 +136,22 @@ public class Graph {
         }
     }
 
-    private boolean isEdgeExist(Edge edge) {
+    private boolean isEdgeExist(Edge edge, EdgeType edgeType) {
         for (Edge edgeListElement : edgeList) {
-            if ((edgeListElement.getSourceVertex() == edge.getSourceVertex() && edgeListElement.getTargetVertex() == edge.getTargetVertex()) ||
-                    (edgeListElement.getTargetVertex() == edge.getSourceVertex() && edgeListElement.getSourceVertex() == edge.getTargetVertex())) {
-                return true;
+            switch (edgeType) {
+                case ORIENTED_EDGE: {
+                    if ((edgeListElement.getSourceVertex() == edge.getSourceVertex() && edgeListElement.getTargetVertex() == edge.getTargetVertex())) {
+                        return true;
+                    }
+                    break;
+                }
+                case NOT_ORIENTED_EDGE: {
+                    if ((edgeListElement.getSourceVertex() == edge.getSourceVertex() && edgeListElement.getTargetVertex() == edge.getTargetVertex()) ||
+                            (edgeListElement.getTargetVertex() == edge.getSourceVertex() && edgeListElement.getSourceVertex() == edge.getTargetVertex())) {
+                        return true;
+                    }
+                    break;
+                }
             }
         }
         return false;

@@ -1,7 +1,5 @@
 package com.graph.editor.model;
 
-import com.graph.editor.model.Graph;
-import com.graph.editor.model.MainModel;
 import javafx.stage.FileChooser;
 
 import java.io.File;
