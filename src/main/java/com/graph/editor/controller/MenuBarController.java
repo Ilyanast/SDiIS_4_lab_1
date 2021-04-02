@@ -34,8 +34,7 @@ public class MenuBarController {
     }
 
     private void graphTaskHandler(){
-        menuBarItems[2].setOnAction(actionEvent -> new GraphTaskController(mainSceneElements.getPane(),
-                mainModel.getGraph(), mainModel.getSelectedElement()).startGraphTask());
+        menuBarItems[2].setOnAction(actionEvent -> new GraphTaskController(mainModel.getGraph()));
     }
 
     private void aboutHandler() {

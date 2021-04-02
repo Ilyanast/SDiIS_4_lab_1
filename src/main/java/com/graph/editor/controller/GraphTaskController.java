@@ -12,16 +12,12 @@ import java.util.List;
 
 public class GraphTaskController {
 
-    private final Pane pane;
     private final Graph graph;
-    private final SelectedElement selectedElement;
 
     private final List<List<Vertex>> hamiltonsCycles;
 
-    public GraphTaskController(Pane pane, Graph graph, SelectedElement selectedElement) {
-        this.selectedElement = selectedElement;
+    public GraphTaskController(Graph graph) {
         this.graph = graph;
-        this.pane = pane;
 
         GraphTask graphTask = new GraphTask(graph);
         graphTask.findHamiltonsCycles();
